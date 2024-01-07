@@ -18,10 +18,16 @@
 
 @property (nonatomic,retain) UILabel *lbselect;  //提示设置温度
 @property (nonatomic,retain) UILabel *lbcurrent;  //当前温度
-@property (nonatomic,retain) UILabel *lbsettin;  //设置温度
-
+@property (nonatomic,retain) UILabel *lbsetting;  //设置温度
 @property (nonatomic,retain) UIButton *btadd;    //按钮加
 @property (nonatomic,retain) UIButton *btdrop;   //按钮减
+
+@property (nonatomic,retain) UIButton *bthigh;   //按钮高
+@property (nonatomic,retain) UIButton *btmedium;   //按钮中
+@property (nonatomic,retain) UIButton *btlow;   //按钮低
+
+@property (nonatomic,retain) UIButton *bton;   //按钮开
+@property (nonatomic,retain) UIButton *btoff;   //按钮关
 
 @property (nonatomic,retain) UIButton *btpower;
 @property (nonatomic,retain) UIButton *bttemp;
@@ -39,11 +45,17 @@
     
     [self.label1 setHidden:YES];
     [self.label2 setHidden:YES];
-    
+    [self.lbselect setHidden:YES];
+    [self.lbcurrent setHidden:YES];
+    [self.lbsetting setHidden:YES];
+    [self.btadd setHidden:YES];
+    [self.btdrop setHidden:YES];
+    [self.bthigh setHidden:YES];
+    [self.btmedium setHidden:YES];
+    [self.btlow setHidden:YES];
 }
 
 -(void)setAutoLayout{
-    
     //double frameWidth = 272;
     //double frameHeight = 564;
     double viewX = [UIScreen mainScreen].bounds.size.width;
@@ -134,6 +146,7 @@
     .widthIs(viewX*0.618)
     .heightIs(viewY*0.142);
     
+#pragma mark 温度相关
     //按钮加
     self.btadd = [UIButton new];
     [self.view addSubview: self.btadd];
@@ -174,21 +187,77 @@
     .heightIs(viewY*0.087);
     
     //设置温度
-    self.lbcurrent = [UILabel new];
-    [self.view addSubview:self.lbcurrent];
-    [self.lbcurrent setTextColor:[UIColor whiteColor]];
-    [self.lbcurrent setTextColor:[UIColor colorWithRed:152.0/255 green:159.0/255 blue:175.0/255 alpha:1.0]];
-    [self.lbcurrent setTextAlignment:NSTextAlignmentCenter];
-    [self.lbcurrent sizeToFit];
-    [self.lbcurrent setText:@"-18°C"];
-    [self.lbcurrent setAdjustsFontSizeToFitWidth:YES];
-    [self.lbcurrent setFont:[UIFont fontWithName:@"Arial" size:60.0]];
-    self.lbcurrent.sd_layout
+    self.lbsetting = [UILabel new];
+    [self.view addSubview:self.lbsetting];
+    [self.lbsetting setTextColor:[UIColor whiteColor]];
+    [self.lbsetting setTextColor:[UIColor colorWithRed:152.0/255 green:159.0/255 blue:175.0/255 alpha:1.0]];
+    [self.lbsetting setTextAlignment:NSTextAlignmentCenter];
+    [self.lbsetting sizeToFit];
+    [self.lbsetting setText:@"-18°C"];
+    [self.lbsetting setAdjustsFontSizeToFitWidth:YES];
+    [self.lbsetting setFont:[UIFont fontWithName:@"Arial" size:60.0]];
+    self.lbsetting.sd_layout
     .centerXEqualToView(self.view)
     .centerYIs(viewY*0.518)
     .widthIs(viewX*0.507)
     .heightIs(viewY*0.087);
     
+    
+#pragma mark 电池选择按钮
+    //电池保护高
+    self.bthigh = [UIButton new];
+    [self.view addSubview: self.bthigh];
+    [ self.bthigh setBackgroundImage:[UIImage imageNamed:@"APP-Surface4_07"] forState:UIControlStateNormal];
+    self.bthigh.sd_layout
+    .centerXEqualToView(self.view)
+    .centerYIs(viewY*0.387)
+    .widthIs(viewX*0.43)
+    .heightIs(viewY *0.081);
+    [self.bthigh addTarget:self action:@selector(sethigh) forControlEvents:UIControlEventTouchUpInside];
+    
+    //电池保护中
+    self.btmedium = [UIButton new];
+    [self.view addSubview: self.btmedium];
+    [ self.btmedium setBackgroundImage:[UIImage imageNamed:@"APP-Surface4_17"] forState:UIControlStateNormal];
+    self.btmedium.sd_layout
+    .centerXEqualToView(self.view)
+    .centerYIs(viewY*0.5)
+    .widthIs(viewX*0.43)
+    .heightIs(viewY *0.081);
+    [self.btmedium addTarget:self action:@selector(setmedium) forControlEvents:UIControlEventTouchUpInside];
+    //电池保护低
+    self.btlow = [UIButton new];
+    [self.view addSubview: self.btlow];
+    [ self.btlow setBackgroundImage:[UIImage imageNamed:@"APP-Surface4_27"] forState:UIControlStateNormal];
+    self.btlow.sd_layout
+    .centerXEqualToView(self.view)
+    .centerYIs(viewY*0.613)
+    .widthIs(viewX*0.43)
+    .heightIs(viewY *0.081);
+    [self.btlow addTarget:self action:@selector(setlow) forControlEvents:UIControlEventTouchUpInside];
+    
+#pragma mark 加强模式开关
+    //加强模式开
+    self.bton = [UIButton new];
+    [self.view addSubview: self.bton];
+    [ self.bton setBackgroundImage:[UIImage imageNamed:@"APP-Surface4_37"] forState:UIControlStateNormal];
+    self.bton.sd_layout
+    .centerXEqualToView(self.view)
+    .centerYIs(viewY*0.387)
+    .widthIs(viewX*0.43)
+    .heightIs(viewY *0.081);
+    [self.bton addTarget:self action:@selector(setlow) forControlEvents:UIControlEventTouchUpInside];
+    
+    //加强模式关
+    self.btoff = [UIButton new];
+    [self.view addSubview: self.btoff];
+    [ self.btoff setBackgroundImage:[UIImage imageNamed:@"APP-Surface4_47"] forState:UIControlStateNormal];
+    self.btoff.sd_layout
+    .centerXEqualToView(self.view)
+    .centerYIs(viewY*0.5)
+    .widthIs(viewX*0.43)
+    .heightIs(viewY *0.081);
+    [self.btoff addTarget:self action:@selector(setlow) forControlEvents:UIControlEventTouchUpInside];
     
 #pragma mark 底部图标
     //1.开关
@@ -310,6 +379,20 @@
 
 //降温
 -(void)drop{
+    
+}
+
+//电池高
+-(void)sethigh{
+    
+}
+
+//电池中
+-(void)setmedium{
+    
+}
+//电池低
+-(void)setlow{
     
 }
 
