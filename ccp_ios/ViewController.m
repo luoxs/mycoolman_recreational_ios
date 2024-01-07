@@ -105,7 +105,7 @@
     .widthIs(viewX*0.618)
     .heightIs(viewY*0.142);
     
-    //扫描二维码
+    //扫描蓝牙
     UIButton *btBluetooth = [UIButton new];
     [self.view addSubview:btBluetooth];
     //[btBluetooth setBackgroundColor:[UIColor colorWithRed:200.0/255 green:101.0/255 blue:69.0/255 alpha:1.0]];
