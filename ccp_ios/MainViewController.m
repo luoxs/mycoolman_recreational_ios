@@ -11,10 +11,18 @@
 #import "MBProgressHUD.h"
 
 @interface MainViewController ()
-@property (nonatomic,retain) UILabel *label0;  //提示功能状态
+@property (nonatomic,retain) UILabel *lbmode;  //提示功能状态
 @property (nonatomic,retain) UILabel *label1;  //开机提示
 @property (nonatomic,retain) UILabel *label2;  //开机提示
 @property (nonatomic,retain) UILabel *label3;  //提示温度
+
+@property (nonatomic,retain) UILabel *lbselect;  //提示设置温度
+@property (nonatomic,retain) UILabel *lbcurrent;  //当前温度
+@property (nonatomic,retain) UILabel *lbsettin;  //设置温度
+
+@property (nonatomic,retain) UIButton *btadd;    //按钮加
+@property (nonatomic,retain) UIButton *btdrop;   //按钮减
+
 @property (nonatomic,retain) UIButton *btpower;
 @property (nonatomic,retain) UIButton *bttemp;
 @property (nonatomic,retain) UIButton *btbattery;
@@ -31,7 +39,6 @@
     
     [self.label1 setHidden:YES];
     [self.label2 setHidden:YES];
-    
     
 }
 
@@ -53,19 +60,34 @@
     .topEqualToView(self.view)
     .heightRatioToView(self.view, 0.1);
     
-    //顶部文字0
-    self.label0 = [UILabel new];
-    [self.view addSubview:self.label0];
-    [self.label0 setTextColor:[UIColor whiteColor]];
-    [self.label0 setTextAlignment:NSTextAlignmentCenter];
-    [self.label0 sizeToFit];
-    [self.label0 setText:@"Current Temperature"];
-    self.label0.sd_layout
+    //显示功能
+    self.lbmode = [UILabel new];
+    [self.view addSubview:self.lbmode];
+    [self.lbmode setTextColor:[UIColor whiteColor]];
+    [self.lbmode setTextAlignment:NSTextAlignmentCenter];
+    [self.lbmode sizeToFit];
+    [self.lbmode setText:@"Current Temperature"];
+    self.lbmode.sd_layout
     .centerXEqualToView(self.view)
     .centerYIs(viewY*0.177)
     .widthIs(viewX*0.618)
     .heightIs(viewY*0.142);
-    [self.label0 setAdjustsFontSizeToFitWidth:YES];
+    [self.lbmode setAdjustsFontSizeToFitWidth:YES];
+    
+    //提示设置温度
+    self.lbselect = [UILabel new];
+    [self.view addSubview:self.lbselect];
+    [self.lbselect setTextColor:[UIColor colorWithRed:152.0/255 green:159.0/255 blue:175.0/255 alpha:1.0]];
+    [self.lbselect setTextAlignment:NSTextAlignmentCenter];
+    [self.lbselect sizeToFit];
+    [self.lbselect setText:@"Preselected Temperature"];
+    self.lbselect.sd_layout
+    .centerXEqualToView(self.view)
+    .centerYIs(viewY*0.716)
+    .widthIs(viewX*0.618)
+    .heightIs(viewY*0.142);
+    [self.lbmode setAdjustsFontSizeToFitWidth:YES];
+    
     
     //中间提示文字1
     self.label1 = [UILabel new];
@@ -111,6 +133,61 @@
     .centerYIs(viewY*0.51)
     .widthIs(viewX*0.618)
     .heightIs(viewY*0.142);
+    
+    //按钮加
+    self.btadd = [UIButton new];
+    [self.view addSubview: self.btadd];
+    [ self.btadd setBackgroundImage:[UIImage imageNamed:@"APP-Surface5_07"] forState:UIControlStateNormal];
+    self.btadd.sd_layout
+    .centerXEqualToView(self.view)
+    .centerYIs(viewY*0.388)
+    .widthIs(viewX*0.162)
+    .heightEqualToWidth();
+    [self.btadd addTarget:self action:@selector(add) forControlEvents:UIControlEventTouchUpInside];
+    
+    //按钮减
+    self.btdrop = [UIButton new];
+    [self.view addSubview: self.btdrop];
+    [ self.btdrop setBackgroundImage:[UIImage imageNamed:@"APP-Surface5_09"] forState:UIControlStateNormal];
+    self.btdrop.sd_layout
+    .centerXEqualToView(self.view)
+    .centerYIs(viewY*0.637)
+    .widthIs(viewX*0.162)
+    .heightEqualToWidth();
+    [self.btdrop addTarget:self action:@selector(add) forControlEvents:UIControlEventTouchUpInside];
+    
+    //富文本
+
+    //当前温度
+    self.lbcurrent = [UILabel new];
+    [self.view addSubview:self.lbcurrent];
+    [self.lbcurrent setTextColor:[UIColor whiteColor]];
+    [self.lbcurrent setTextAlignment:NSTextAlignmentCenter];
+    [self.lbcurrent sizeToFit];
+    [self.lbcurrent setText:@"+12°C"];
+    [self.lbcurrent setAdjustsFontSizeToFitWidth:YES];
+    [self.lbcurrent setFont:[UIFont fontWithName:@"Arial" size:60.0]];
+    self.lbcurrent.sd_layout
+    .centerXEqualToView(self.view)
+    .centerYIs(viewY*0.26)
+    .widthIs(viewX*0.507)
+    .heightIs(viewY*0.087);
+    
+    //设置温度
+    self.lbcurrent = [UILabel new];
+    [self.view addSubview:self.lbcurrent];
+    [self.lbcurrent setTextColor:[UIColor whiteColor]];
+    [self.lbcurrent setTextColor:[UIColor colorWithRed:152.0/255 green:159.0/255 blue:175.0/255 alpha:1.0]];
+    [self.lbcurrent setTextAlignment:NSTextAlignmentCenter];
+    [self.lbcurrent sizeToFit];
+    [self.lbcurrent setText:@"-18°C"];
+    [self.lbcurrent setAdjustsFontSizeToFitWidth:YES];
+    [self.lbcurrent setFont:[UIFont fontWithName:@"Arial" size:60.0]];
+    self.lbcurrent.sd_layout
+    .centerXEqualToView(self.view)
+    .centerYIs(viewY*0.518)
+    .widthIs(viewX*0.507)
+    .heightIs(viewY*0.087);
     
     
 #pragma mark 底部图标
@@ -221,6 +298,18 @@
 -(void) power{
     [self.label1 setHidden:YES];
     [self.label2 setHidden:YES];
+}
+
+
+
+
+//升温
+-(void) add{
+}
+
+
+//降温
+-(void)drop{
     
 }
 
