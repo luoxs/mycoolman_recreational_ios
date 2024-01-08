@@ -38,7 +38,7 @@
     // Do any additional setup after loading the view.
     self.hud = [[MBProgressHUD alloc]init];
     
-    
+    self.dataRead = [[DataRead alloc] init];
     self.tableview = [[UITableView alloc]init];
     self.tableview.delegate = self;
     self.tableview.dataSource = self;
@@ -234,9 +234,6 @@
     
     [self.viewMusk setHidden:YES];
 }
-
-
-
 
 
 #pragma mark - babyDelegate
