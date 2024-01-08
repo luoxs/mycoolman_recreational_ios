@@ -9,6 +9,8 @@
 #import "BabyBluetooth.h"
 #import "SDAutoLayout.h"
 #import "MBProgressHUD.h"
+#import "crc.h"
+#import "MainViewController.h"
 
 @interface ViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
 @property (retain, nonatomic)  MBProgressHUD *hud;
@@ -25,7 +27,7 @@
 @property(nonatomic,strong) NSString *strpass;
 @property Byte bytePass1;
 @property Byte bytePass2;
-
+@property Byte bytePass3;
 
 @end
 
@@ -51,7 +53,7 @@
 -(void)viewDidAppear:(BOOL)animated{
     [self.tableview reloadData];
     [self babyDelegate];
-    baby.scanForPeripherals().begin();
+   // baby.scanForPeripherals().begin();
     //[self.viewMusk setHidden:NO];
 }
 
@@ -162,14 +164,16 @@
     [self.view addSubview:self.viewMusk];
     
     CGRect passFrame = CGRectMake(self.viewMusk.origin.x+30*rwidth, self.viewMusk.origin.y+202*rheight, 330*rwidth, 330*rheight);
+    //[self.viewPass setBackgroundColor:[UIColor colorWithRed:200.0/255.0 green:101.0/255.0 blue:69.0/255.0 alpha:1]];
     self.viewPass = [[UIView alloc] initWithFrame:passFrame];
-    [self.viewPass setBackgroundColor:[UIColor whiteColor]];
+   // [self.viewPass setBackgroundColor:[UIColor whiteColor]];
     self.viewPass.layer.cornerRadius = 20.0;
     [self.viewMusk addSubview: self.viewPass];
     
     //密码框
     CGRect rectPass1 = CGRectMake(44*rwidth, 32*rheight, 67*rwidth, 81*rheight);
     self.tfPass1 = [[UITextField alloc] initWithFrame:rectPass1];
+    [self.tfPass1 setTextColor:[UIColor blackColor]];
     [self.tfPass1 setBackgroundColor:[UIColor grayColor]];
     //self.tfPass1.layer.backgroundColor = [[UIColor clearColor] CGColor];
     self.tfPass1.layer.borderColor = [[UIColor blackColor]CGColor];
@@ -187,6 +191,7 @@
     
     CGRect rectPass2 = CGRectMake(133*rwidth, 32*rheight, 67*rwidth, 81*rheight);
     self.tfPass2 = [[UITextField alloc] initWithFrame:rectPass2];
+    [self.tfPass2 setTextColor:[UIColor blackColor]];
     [self.tfPass2 setBackgroundColor:[UIColor grayColor]];
     self.tfPass2.layer.backgroundColor = [[UIColor clearColor] CGColor];
     self.tfPass2.layer.borderColor = [[UIColor blackColor]CGColor];
@@ -204,6 +209,7 @@
     
     CGRect rectPass3 = CGRectMake(221*rwidth, 32*rheight, 67*rwidth, 81*rheight);
     self.tfPass3 = [[UITextField alloc] initWithFrame:rectPass3];
+    [self.tfPass3 setTextColor:[UIColor blackColor]];
     [self.tfPass3 setBackgroundColor:[UIColor grayColor]];
     self.tfPass3.layer.backgroundColor = [[UIColor clearColor] CGColor];
     //self.tfPass3.layer.borderColor = [[UIColor blackColor]CGColor];
@@ -243,21 +249,27 @@
         
 //        if(([peripheral.name hasPrefix:@"CCA"]||[peripheral.name hasPrefix:@"GCA"]) && ![self.devices containsObject:peripheral])  {
         NSString *advertiseName = advertisementData[@"kCBAdvDataLocalName"];
-        if([advertiseName hasPrefix:@"G29"]||[advertiseName hasPrefix:@"G29A"]||[advertiseName hasPrefix:@"EVA"]||[advertiseName hasPrefix:@"GCA"])  {
+        if([peripheral.name hasPrefix:@"CCP15R"]||[peripheral.name hasPrefix:@"CCP20R"]){
             [weakSelf.devices addObject:peripheral];
             [weakSelf.localNames addObject:advertiseName];
-           // weakSelf.currPeripheral = peripheral;
+             weakSelf.currPeripheral = peripheral;
             [weakSelf.tableview reloadData];
             if([weakSelf.devices count]>5){
                  [central stopScan];
             }
-            if([advertiseName hasPrefix:@"EVA24"]) {
-                weakSelf.brand = @"EVA24VTR";
-            }else if([advertiseName hasPrefix:@"EVA12"]){
-                weakSelf.brand = @"EVA12VTR";
-            }else{
-                weakSelf.brand = @"EVA2700RV";
+            if([advertiseName hasPrefix:@"CCP15R"]) {
+                weakSelf.brand = @"CCP15R";
+            }else {
+                weakSelf.brand = @"CCP20R";
             }
+        }
+        if([peripheral.name hasPrefix:@"CCP15R"] ||[peripheral.name hasPrefix:@"CCP20R"])  {
+            [weakSelf.devices addObject:peripheral];
+            [baby.centralManager connectPeripheral:peripheral options:nil];
+        }
+        // [weakSelf.tableView reloadData];
+        if([weakSelf.devices count]>7){
+            [central stopScan];
         }
     }];
     
@@ -282,73 +294,135 @@
         [central stopScan];
         NSLog(@"设备：%@--连接成功",peripheral.name);
         weakSelf.currPeripheral = peripheral;
-        weakSelf.hud.mode = MBProgressHUDModeText;
-        weakSelf.hud.label.text = @"Device connected!";
-        [weakSelf.hud setMinShowTime:1];
-        [weakSelf.hud hideAnimated:YES];
         [peripheral discoverServices:nil];
-        
     }];
     
     //设置发现设备的Services的委托
     [baby setBlockOnDiscoverServices:^(CBPeripheral *peripheral, NSError *error) {
         for (CBService *service in peripheral.services) {
             NSLog(@"搜索到服务:%@",service.UUID.UUIDString);
-            //for(CBService *service in peripheral.services){
-                if([service.UUID.UUIDString isEqualToString:@"FFE0"]){
-                 [peripheral discoverCharacteristics:nil forService:service];
+            for(CBService *service in peripheral.services){
+                [peripheral discoverCharacteristics:nil forService:service];
             }
         }
     }];
     
     //设置发现设service的Characteristics的委托
     [baby setBlockOnDiscoverCharacteristics:^(CBPeripheral *peripheral, CBService *service, NSError *error) {
-        NSLog(@"===service name:%@",service.UUID);
+        // NSLog(@"===service name:%@",service.UUID);
         for (CBCharacteristic *c in service.characteristics) {
-            NSLog(@"charateristic name is :%@",c.UUID);
-    
-            if([c.UUID.UUIDString isEqualToString:@"FFE1"]){
-                [weakSelf.viewMusk setHidden:YES];
+            //NSLog(@"charateristic name is :%@",c.UUID);
+            if([c.UUID.UUIDString isEqualToString:@"FEE1"]){
+                weakSelf.currPeripheral = peripheral;
+                weakSelf.characteristic = c;
                 
-                /*
-                if([weakSelf.brand isEqualToString:@"EVA24VTR"]){
-                    TruckViewController *truckViewController = [[TruckViewController alloc]init];
-                    [truckViewController setModalPresentationStyle:UIModalPresentationFullScreen];
-                    truckViewController.currPeripheral = weakSelf.currPeripheral;
-                    truckViewController.characteristic = c;
-                    truckViewController.brand = weakSelf.brand;
-                    [weakSelf presentViewController:truckViewController animated:YES completion:nil];
-                }else  if([weakSelf.brand isEqualToString:@"EVA12VTR"]){
-                    TruckViewController *truckViewController = [[TruckViewController alloc]init];
-                    [truckViewController setModalPresentationStyle:UIModalPresentationFullScreen];
-                    truckViewController.currPeripheral = weakSelf.currPeripheral;
-                    truckViewController.characteristic = c;
-                    truckViewController.brand = weakSelf.brand;
-                    [weakSelf presentViewController:truckViewController animated:YES completion:nil];
-                }else{
-                    RoomViewController *roomViewController = [[RoomViewController alloc]init];
-                    [roomViewController setModalPresentationStyle:UIModalPresentationFullScreen];
-                    roomViewController.currPeripheral = weakSelf.currPeripheral;
-                    roomViewController.characteristic = c;
-                    roomViewController.brand = weakSelf.brand;
-                    [weakSelf presentViewController:roomViewController animated:YES completion:nil];
+                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                weakSelf.strpass = [defaults  objectForKey:peripheral.identifier.UUIDString];
+                
+                if(weakSelf.strpass != nil){
+                    weakSelf.bytePass1 = (int)strtoul([[weakSelf.strpass substringWithRange:NSMakeRange(0, 1)] UTF8String],0,16);
+                    weakSelf.bytePass2 = (int)strtoul([[weakSelf.strpass substringWithRange:NSMakeRange(1, 1)] UTF8String],0,16);
+                    weakSelf.bytePass3 = (int)strtoul([[weakSelf.strpass substringWithRange:NSMakeRange(2, 1)] UTF8String],0,16);
+                    [weakSelf.viewMusk setHidden:YES];
+                    
+                    if(self.characteristic != nil){
+                        Byte  write[8];
+                        write[0] = 0xAA;
+                        write[1] = 0x01;
+                        write[2] = 0x00;
+                        write[3] = (Byte)weakSelf.bytePass1;
+                        write[4] = (Byte)weakSelf.bytePass2*16+weakSelf.bytePass3;
+                        write[6] = 0xFF & CalcCRC(&write[1], 4);
+                        write[5] = 0xFF & (CalcCRC(&write[1], 4)>>8);
+                        write[7] = 0x55;
+                        
+                        //首次连接 write = AA 09 01 00 00 78 52 55
+                        
+                        NSData *data = [[NSData alloc]initWithBytes:write length:8];
+                        [weakSelf.currPeripheral writeValue:data forCharacteristic:weakSelf.characteristic type:CBCharacteristicWriteWithResponse];
+                        [weakSelf.currPeripheral setNotifyValue:YES forCharacteristic:weakSelf.characteristic];
+                    }
                 }
-                 */
+                [peripheral readValueForCharacteristic:c];
             }
         }
     }];
     
     //设置读取characteristics的委托
     [baby setBlockOnReadValueForCharacteristic:^(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error) {
-        NSLog(@"read characteristic successfully!");
+        //   NSLog(@"read characteristic successfully!");
         
-        if([characteristics.UUID.UUIDString isEqualToString:@"FFE1"]){
+        [weakSelf.hud hideAnimated:YES];
+        [weakSelf.hud removeFromSuperview];
+        
+        if([characteristics.UUID.UUIDString isEqualToString:@"FEE1"]){
+            
             weakSelf.characteristic = characteristics;
             weakSelf.currPeripheral = peripheral;
+            
+            NSData *data = characteristics.value;
+            Byte r[22] = {0};
+            
+            if(data.length == 0){
+                [weakSelf getPassWord];
+            }
+            /*
+             @property Byte  start; //通讯开始
+             @property Byte  power; //0x01开机，0x00关机
+             @property Byte  tempcool;  //设定制冷温度
+             @property Byte  tempReal;  //实时制冷温度或加热温度
+             @property Byte  frozesetting;  //   冷冻箱设定温度 （双温区冰箱才有效，单温区冰箱忽略该数据）
+             @property Byte  frozereal;  // 冷冻箱实时温度 （双温区冰箱才有效，单温区冰箱忽略该数据）
+             @property Byte  turbo;  //TURBOM模式 0X00-ECO  0X01-TURBO
+             @property Byte  heat; //加热或制冷模式 0X00-制冷模式 0X01-加热模式（单冷冰箱没有此值）
+             @property Byte  battery;  //电池保护设置 0-低档 1-中档 2-高档
+             @property Byte  unit;  //温度单温 0-华氏度 1-摄氏度
+             @property Byte  status;  //工作状态  0-停机 1-工作
+             @property Byte  errorcode;  //故障代码
+             @property Byte  vhigh;   //电压高八位
+             @property Byte  vlow;  //电压低八位
+             @property Byte  gc;    //GC单温冰箱 固定0x03
+             @property Byte  tempheat;   //加热设定温度
+             @property Byte  timer;    //定时关机时间
+             @property Byte  code1;    //备用
+             @property Byte  code2;    //备用
+             @property Byte  crcH;  //CRC 校验高八位
+             @property Byte  crcL;  //CRC 校验高八位
+             @property Byte  end;  //通讯结束
+             */
+            
+            if(data.length == 22){
+                memcpy(r, [data bytes], 22);
+                NSLog(@"copy data successfully!");
+                weakSelf.dataRead.start = r[0];  //通讯开始
+                weakSelf.dataRead.power = r[1];  //开机0x01 关机0x00
+                weakSelf.dataRead.tempcool = r[2];  //设定制冷温度
+                weakSelf.dataRead.tempReal = r[3];     //实时制冷或加热温度
+                weakSelf.dataRead.frozesetting = r[4];  //冷冻箱设定温度
+                weakSelf.dataRead.frozereal = r[5];   //冷冻箱实时温度
+                weakSelf.dataRead.turbo = r[6];   //URBOM模式 0X00-ECO  0X01-TURBO
+                weakSelf.dataRead.heat = r[7];    //加热或制冷模式 0X00-制冷模式 0X01-加热模式（单冷冰箱没有此值）
+                weakSelf.dataRead.battery = r[8];   //电池保护设置 0-低档 1-中档 2-高档
+                weakSelf.dataRead.unit = r[9];    //温度单位 0华氏 1摄氏
+                weakSelf.dataRead.status = r[10];  //工作状态 0停机 1工作
+                weakSelf.dataRead.errorcode = r[11];     //故障代码
+                weakSelf.dataRead.vhigh = r[12];  //电压高八位
+                weakSelf.dataRead.vlow = r[13];   //电压低八位
+                weakSelf.dataRead.gc = r[14];    //冰箱类型
+                weakSelf.dataRead.tempheat = r[15];  //加热设定温度
+                weakSelf.dataRead.timer = r[16]; //定时关机时间
+                weakSelf.dataRead.code1 = r[17];  //备用1
+                weakSelf.dataRead.code2 = r[18];  //备用2
+                weakSelf.dataRead.crcH = r[19];   //CRC校验高八位
+                weakSelf.dataRead.crcL = r[20];   //CRC校验低八位
+                weakSelf.dataRead.end = r[21];  //通信结束
+                if(self.dataRead.gc == 0x00){
+                    NSLog(@"请输入密码");
+                }else{
+                    [weakSelf updateStatus];
+                }
+            }
         }
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        [defaults setValue:peripheral.identifier.UUIDString forKey:@"UUID"];
-        [defaults synchronize];
     }];
     
     //扫描选项->CBCentralManagerScanOptionAllowDuplicatesKey:同一个Peripheral端的多个发现事件被聚合成一个发现事件
@@ -360,7 +434,7 @@
     
      __block BOOL isFirst = YES;
      [baby setFilterOnConnectToPeripherals:^BOOL(NSString *peripheralName, NSDictionary *advertisementData, NSNumber *RSSI) {
-     if(isFirst && ([advertisementData[@"kCBAdvDataLocalName"] hasPrefix:@"G29"]|| [advertisementData[@"kCBAdvDataLocalName"] hasPrefix:@"EVA"]||[advertisementData[@"kCBAdvDataLocalName"] hasPrefix:@"GCA"])){
+     if(isFirst && ([peripheralName hasPrefix:@"CCP15R"]|| [peripheralName hasPrefix:@"CCP20R"])){
      isFirst = NO;
      return YES;
      }
@@ -404,10 +478,8 @@
     
 }
 
-
-
-
 - (void)textFiledDidChange:(UITextField *)textField{
+    
     textField.layer.borderWidth = 0.0;
     [textField.layer setBackgroundColor: [[UIColor colorWithRed:230/255.0 green:230/255.0 blue:230/255.0 alpha:1.0] CGColor]];
     
@@ -428,12 +500,45 @@
         [self.tfPass2  becomeFirstResponder];
     }
     
-    if((self.tfPass1.text.length + self.tfPass2.text.length) == 2){
+    if([textField isEqual:self.tfPass2]){
         [textField resignFirstResponder];
-        //[self confirmPa];
+        [self.tfPass3 becomeFirstResponder];
     }
     
-    // [self confirmPa];
+    if((self.tfPass1.text.length + self.tfPass2.text.length + self.tfPass3.text.length )== 3){
+        [textField resignFirstResponder];
+        [self confirmPa];
+    }
+    
+}
+
+
+-(void) confirmPa{
+    int num1 = (int)strtoul([self.tfPass1.text UTF8String],0,16);  //16进制字符串转换成int
+    int num2 = (int)strtoul([self.tfPass2.text UTF8String],0,16);  //16进制字符串转换成int
+    int num3 = (int)strtoul([self.tfPass3.text UTF8String],0,16);  //16进制字符串转换成int
+    
+    NSLog(@"%d",num1);
+    NSLog(@"%d",num2);
+    NSLog(@"%d",num3);
+    //查询状态
+    if(self.characteristic != nil){
+        Byte  write[8];
+        write[0] = 0xAA;
+        write[1] = 0x01;
+        write[2] = 0x00;
+        write[3] = (Byte)num1;
+        write[4] = (Byte)num2*16+num3;
+        write[6] = 0xFF & CalcCRC(&write[1], 4);
+        write[5] = 0xFF & (CalcCRC(&write[1], 4)>>8);
+        write[7] = 0x55;
+        
+        //首次连接 write = AA 09 01 00 00 78 52 55
+        
+        NSData *data = [[NSData alloc]initWithBytes:write length:8];
+        [self.currPeripheral writeValue:data forCharacteristic:self.characteristic type:CBCharacteristicWriteWithResponse];
+        [self.currPeripheral setNotifyValue:YES forCharacteristic:self.characteristic];
+    }
 }
 
 
@@ -441,6 +546,60 @@
 -(void)closepass{
     
     
+}
+
+
+//获取密码
+-(void)getPassWord{
+    //大板 A46
+    [self.tfPass1 setHidden:NO];
+    [self.tfPass2 setHidden:NO];
+    [self.tfPass3 setHidden:NO];
+    
+    if(self.characteristic != nil){
+        Byte  write[8];
+        write[0] = 0xAA;
+        write[1] = 0x09;
+        write[2] = 0x01;
+        write[3] = 0x00;
+        write[4] = 0x00;
+        write[6] = 0xFF & CalcCRC(&write[1], 4);
+        write[5] = 0xFF & (CalcCRC(&write[1], 4)>>8);
+        write[7] = 0x55;
+        
+        //首次连接 write = AA 09 01 00 00 78 52 55
+        
+        NSData *data = [[NSData alloc]initWithBytes:write length:8];
+        [self.currPeripheral writeValue:data forCharacteristic:self.characteristic type:CBCharacteristicWriteWithResponse];
+        [self.currPeripheral setNotifyValue:YES forCharacteristic:self.characteristic];
+        // [self updateStatus];
+    }
+}
+
+//更新状态
+-(void)updateStatus{
+    //有返回非零数字，密码正确。保存密码
+    if( self.dataRead.gc!= 0 ){
+        [self.viewMusk setHidden:YES];
+        if(self.strpass == nil){
+            //保存密码
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            self.strpass = [NSString stringWithFormat:@"%@%@%@",self.tfPass1.text,self.tfPass2.text,self.tfPass3.text];
+            [defaults setValue:self.strpass forKey:self.currPeripheral.identifier.UUIDString];
+            self.bytePass1 = (Byte)strtoul([self.tfPass1.text UTF8String],0,16);  //16进制字符串转换成int
+            self.bytePass2 = (Byte)strtoul([self.tfPass2.text UTF8String],0,16);  //16进制字符串转换成int
+            self.bytePass3 = (Byte)strtoul([self.tfPass3.text UTF8String],0,16);  //16进
+        }
+    
+        [self.viewMusk setHidden:YES];
+        //  [baby.centralManager  stopScan];
+        [self.hud setHidden:YES];
+        [self.hud removeFromSuperview];
+        
+        MainViewController *mainViewController = [[MainViewController alloc]init];
+        [mainViewController setModalPresentationStyle:UIModalPresentationFullScreen];
+        [self presentViewController:mainViewController animated:YES completion:nil];
+    }
 }
 
 #pragma mark - Navigation
@@ -455,15 +614,5 @@
 }
 
 
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
