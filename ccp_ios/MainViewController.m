@@ -43,9 +43,10 @@
     [self setAutoLayout];
     // Do any additional setup after loading the view.
     
-    [self.label1 setHidden:YES];
-    [self.label2 setHidden:YES];
+    [self.label1 setHidden:NO];
+    [self.label2 setHidden:NO];
     [self.lbselect setHidden:YES];
+    [self.lbmode setHidden:YES];
     [self.lbcurrent setHidden:YES];
     [self.lbsetting setHidden:YES];
     [self.btadd setHidden:YES];
@@ -53,6 +54,8 @@
     [self.bthigh setHidden:YES];
     [self.btmedium setHidden:YES];
     [self.btlow setHidden:YES];
+    [self.bton setHidden:YES];
+    [self.btoff setHidden:YES];
 }
 
 -(void)setAutoLayout{
@@ -371,7 +374,6 @@
     .centerYIs(viewY*0.91)
     .widthIs(viewX*0.162)
     .heightIs(viewY*0.035);
-    
     
     //底部文字4
     UILabel * label14 = [UILabel new];
