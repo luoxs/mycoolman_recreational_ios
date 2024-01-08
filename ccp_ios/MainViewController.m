@@ -407,7 +407,6 @@
     [self.bttemp setBackgroundImage:[UIImage imageNamed:@"APP-Surface3_13"] forState:UIControlStateNormal];
     [self.btbattery setBackgroundImage:[UIImage imageNamed:@"APP-Surface3_15"] forState:UIControlStateNormal];
     [self.btturbo setBackgroundImage:[UIImage imageNamed:@"APP-Surface3_17"] forState:UIControlStateNormal];
-    
     [self.lbmode setText:@""];
     
 }
@@ -430,7 +429,6 @@
     [self.bttemp setBackgroundImage:[UIImage imageNamed:@"APP-Surface3_31"] forState:UIControlStateNormal];
     [self.btbattery setBackgroundImage:[UIImage imageNamed:@"APP-Surface3_15"] forState:UIControlStateNormal];
     [self.btturbo setBackgroundImage:[UIImage imageNamed:@"APP-Surface3_17"] forState:UIControlStateNormal];
-    
     [self.lbmode setText:@"Current Temperature"];
 }
 
@@ -452,7 +450,6 @@
     [self.bttemp setBackgroundImage:[UIImage imageNamed:@"APP-Surface3_13"] forState:UIControlStateNormal];
     [self.btbattery setBackgroundImage:[UIImage imageNamed:@"APP-Surface3_33"] forState:UIControlStateNormal];
     [self.btturbo setBackgroundImage:[UIImage imageNamed:@"APP-Surface3_17"] forState:UIControlStateNormal];
-    
     [self.lbmode setText:@"Battery Protection"];
 }
 
@@ -474,7 +471,6 @@
     [self.bttemp setBackgroundImage:[UIImage imageNamed:@"APP-Surface3_13"] forState:UIControlStateNormal];
     [self.btbattery setBackgroundImage:[UIImage imageNamed:@"APP-Surface3_15"] forState:UIControlStateNormal];
     [self.btturbo setBackgroundImage:[UIImage imageNamed:@"APP-Surface3_35"] forState:UIControlStateNormal];
-    
     [self.lbmode setText:@"Turbo Modes"];
 }
 
