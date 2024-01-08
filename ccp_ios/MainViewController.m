@@ -62,6 +62,7 @@
     double viewY = [UIScreen mainScreen].bounds.size.height;
     [self.view setBackgroundColor:[UIColor colorWithRed:42.0/255 green:70.0/255 blue:90.0/255 alpha:1.0]];
     
+#pragma mark 导航栏
     //导航栏
     UIView *viewTop = [UIView new];
     [self.view addSubview:viewTop];
@@ -71,6 +72,24 @@
     .rightEqualToView(self.view)
     .topEqualToView(self.view)
     .heightRatioToView(self.view, 0.1);
+    
+    //商标
+    UILabel *lblogo = [UILabel new];
+    [self.view addSubview:lblogo];
+    [lblogo setTextColor:[UIColor whiteColor]];
+    [lblogo setFont:[UIFont fontWithName:@"Arial" size:24]];
+    [lblogo setTextAlignment:NSTextAlignmentCenter];
+    [lblogo sizeToFit];
+    [lblogo setText:@"MY COOLMAN"];
+    lblogo.sd_layout
+    .centerXEqualToView(self.view)
+    .topSpaceToView(self.view, viewY*0.06)
+    .widthIs(viewX*0.618)
+    .heightRatioToView(self.view, 0.04);
+    [lblogo setAdjustsFontSizeToFitWidth:YES];
+    
+    
+    
     
     //显示功能
     self.lbmode = [UILabel new];
@@ -86,7 +105,7 @@
     .heightIs(viewY*0.142);
     [self.lbmode setAdjustsFontSizeToFitWidth:YES];
     
-    //提示设置温度
+    //功能选择
     self.lbselect = [UILabel new];
     [self.view addSubview:self.lbselect];
     [self.lbselect setTextColor:[UIColor colorWithRed:152.0/255 green:159.0/255 blue:175.0/255 alpha:1.0]];
@@ -100,7 +119,7 @@
     .heightIs(viewY*0.142);
     [self.lbmode setAdjustsFontSizeToFitWidth:YES];
     
-    
+#pragma mark 首页二页文字
     //中间提示文字1
     self.label1 = [UILabel new];
     [self.view addSubview:self.label1];
@@ -269,7 +288,7 @@
     .centerYIs(viewY*0.84)
     .widthIs(viewX*0.206)
     .heightEqualToWidth();
-    [self.btpower addTarget:self action:@selector(power) forControlEvents:UIControlEventTouchUpInside];
+    [self.btpower addTarget:self action:@selector(setpower) forControlEvents:UIControlEventTouchUpInside];
     
     //2.设置温度
     self.bttemp = [UIButton new];
@@ -280,6 +299,8 @@
     .centerYIs(viewY*0.84)
     .widthIs(viewX*0.206)
     .heightEqualToWidth();
+    [self.bttemp addTarget:self action:@selector(settemp) forControlEvents:UIControlEventTouchUpInside];
+
    
     //3.设置电池
     self.btbattery = [UIButton new];
@@ -290,6 +311,8 @@
     .centerYIs(viewY*0.84)
     .widthIs(viewX*0.206)
     .heightEqualToWidth();
+    [self.btbattery addTarget:self action:@selector(setbattery) forControlEvents:UIControlEventTouchUpInside];
+
    
     //4.设置模式
     self.btturbo = [UIButton new];
@@ -300,6 +323,8 @@
     .centerYIs(viewY*0.84)
     .widthIs(viewX*0.206)
     .heightEqualToWidth();
+    [self.btturbo addTarget:self action:@selector(setturbo) forControlEvents:UIControlEventTouchUpInside];
+
     
 #pragma mark 底部图标文字
     //底部文字1
@@ -364,11 +389,94 @@
     .heightIs(viewY*0.035);
 }
 
--(void) power{
-    [self.label1 setHidden:YES];
-    [self.label2 setHidden:YES];
+-(void) setpower{
+    [self.lbmode setHidden:YES];
+    [self.label1 setHidden:NO];
+    [self.label2 setHidden:NO];
+    [self.lbselect setHidden:YES];
+    [self.lbcurrent setHidden:YES];
+    [self.lbsetting setHidden:YES];
+    [self.btadd setHidden:YES];
+    [self.btdrop setHidden:YES];
+    [self.bthigh setHidden:YES];
+    [self.btmedium setHidden:YES];
+    [self.btlow setHidden:YES];
+    [self.bton setHidden:YES];
+    [self.btoff setHidden:YES];
+    [self.btpower setBackgroundImage:[UIImage imageNamed:@"APP-Surface3_29"] forState:UIControlStateNormal];
+    [self.bttemp setBackgroundImage:[UIImage imageNamed:@"APP-Surface3_13"] forState:UIControlStateNormal];
+    [self.btbattery setBackgroundImage:[UIImage imageNamed:@"APP-Surface3_15"] forState:UIControlStateNormal];
+    [self.btturbo setBackgroundImage:[UIImage imageNamed:@"APP-Surface3_17"] forState:UIControlStateNormal];
+    
+    [self.lbmode setText:@""];
+    
 }
 
+-(void) settemp{
+    [self.lbmode setHidden:NO];
+    [self.label1 setHidden:YES];
+    [self.label2 setHidden:YES];
+    [self.lbselect setHidden:NO];
+    [self.lbcurrent setHidden:NO];
+    [self.lbsetting setHidden:NO];
+    [self.btadd setHidden:NO];
+    [self.btdrop setHidden:NO];
+    [self.bthigh setHidden:YES];
+    [self.btmedium setHidden:YES];
+    [self.btlow setHidden:YES];
+    [self.bton setHidden:YES];
+    [self.btoff setHidden:YES];
+    [self.btpower setBackgroundImage:[UIImage imageNamed:@"APP-Surface3_11"] forState:UIControlStateNormal];
+    [self.bttemp setBackgroundImage:[UIImage imageNamed:@"APP-Surface3_31"] forState:UIControlStateNormal];
+    [self.btbattery setBackgroundImage:[UIImage imageNamed:@"APP-Surface3_15"] forState:UIControlStateNormal];
+    [self.btturbo setBackgroundImage:[UIImage imageNamed:@"APP-Surface3_17"] forState:UIControlStateNormal];
+    
+    [self.lbmode setText:@"Current Temperature"];
+}
+
+-(void) setbattery{
+    [self.lbmode setHidden:NO];
+    [self.label1 setHidden:YES];
+    [self.label2 setHidden:YES];
+    [self.lbselect setHidden:YES];
+    [self.lbcurrent setHidden:YES];
+    [self.lbsetting setHidden:YES];
+    [self.btadd setHidden:YES];
+    [self.btdrop setHidden:YES];
+    [self.bthigh setHidden:NO];
+    [self.btmedium setHidden:NO];
+    [self.btlow setHidden:NO];
+    [self.bton setHidden:YES];
+    [self.btoff setHidden:YES];
+    [self.btpower setBackgroundImage:[UIImage imageNamed:@"APP-Surface3_11"] forState:UIControlStateNormal];
+    [self.bttemp setBackgroundImage:[UIImage imageNamed:@"APP-Surface3_13"] forState:UIControlStateNormal];
+    [self.btbattery setBackgroundImage:[UIImage imageNamed:@"APP-Surface3_33"] forState:UIControlStateNormal];
+    [self.btturbo setBackgroundImage:[UIImage imageNamed:@"APP-Surface3_17"] forState:UIControlStateNormal];
+    
+    [self.lbmode setText:@"Battery Protection"];
+}
+
+-(void) setturbo{
+    [self.lbmode setHidden:NO];
+    [self.label1 setHidden:YES];
+    [self.label2 setHidden:YES];
+    [self.lbselect setHidden:YES];
+    [self.lbcurrent setHidden:YES];
+    [self.lbsetting setHidden:YES];
+    [self.btadd setHidden:YES];
+    [self.btdrop setHidden:YES];
+    [self.bthigh setHidden:YES];
+    [self.btmedium setHidden:YES];
+    [self.btlow setHidden:YES];
+    [self.bton setHidden:NO];
+    [self.btoff setHidden:NO];
+    [self.btpower setBackgroundImage:[UIImage imageNamed:@"APP-Surface3_11"] forState:UIControlStateNormal];
+    [self.bttemp setBackgroundImage:[UIImage imageNamed:@"APP-Surface3_13"] forState:UIControlStateNormal];
+    [self.btbattery setBackgroundImage:[UIImage imageNamed:@"APP-Surface3_15"] forState:UIControlStateNormal];
+    [self.btturbo setBackgroundImage:[UIImage imageNamed:@"APP-Surface3_35"] forState:UIControlStateNormal];
+    
+    [self.lbmode setText:@"Turbo Modes"];
+}
 
 
 
