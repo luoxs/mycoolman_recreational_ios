@@ -246,6 +246,7 @@
         NSLog(@"Device discovered :%@",peripheral.name);
         
 //        if(([peripheral.name hasPrefix:@"CCA"]||[peripheral.name hasPrefix:@"GCA"]) && ![self.devices containsObject:peripheral])  {
+        /*
         NSString *advertiseName = advertisementData[@"kCBAdvDataLocalName"];
         if([peripheral.name hasPrefix:@"CCP15R"]||[peripheral.name hasPrefix:@"CCP20R"]){
             [weakSelf.devices addObject:peripheral];
@@ -260,7 +261,8 @@
             }else {
                 weakSelf.brand = @"CCP20R";
             }
-        }
+        }*/
+        
         if([peripheral.name hasPrefix:@"CCP15R"] ||[peripheral.name hasPrefix:@"CCP20R"])  {
             [weakSelf.devices addObject:peripheral];
             [baby.centralManager connectPeripheral:peripheral options:nil];
@@ -593,9 +595,12 @@
         //  [baby.centralManager  stopScan];
         [self.hud setHidden:YES];
         [self.hud removeFromSuperview];
+        [self.viewMusk removeFromSuperview];
         
         MainViewController *mainViewController = [[MainViewController alloc]init];
         [mainViewController setModalPresentationStyle:UIModalPresentationFullScreen];
+        mainViewController.currPeripheral = self.currPeripheral;
+        mainViewController.characteristic = self.characteristic;
         [self presentViewController:mainViewController animated:YES completion:nil];
     }
 }
