@@ -149,6 +149,7 @@
     //self.hud.label.text = @"Scan bluetooth";
     self.hud.label.text = NSLocalizedString(@"scan", nil);
     [self.hud showAnimated:YES];
+    [self.hud hideAnimated:YES afterDelay:10];
 }
 
 
