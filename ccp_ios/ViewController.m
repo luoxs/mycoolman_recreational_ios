@@ -11,8 +11,9 @@
 #import "MBProgressHUD.h"
 #import "crc.h"
 #import "MainViewController.h"
+#import <AVFoundation/AVFoundation.h>
 
-@interface ViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
+@interface ViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,AVCaptureMetadataOutputObjectsDelegate>
 @property (retain, nonatomic)  MBProgressHUD *hud;
 @property (nonatomic,retain) NSMutableArray <CBPeripheral*> *devices;;
 @property (nonatomic,retain) NSMutableArray *localNames;
@@ -28,6 +29,11 @@
 @property Byte bytePass1;
 @property Byte bytePass2;
 @property Byte bytePass3;
+
+@property NSString *deviceprofix;
+
+@property (nonatomic,retain)  AVCaptureSession *session; //扫描二维码会话
+@property (nonatomic,retain)  AVCaptureVideoPreviewLayer *layer;
 
 @end
 
@@ -53,7 +59,7 @@
 -(void)viewDidAppear:(BOOL)animated{
     [self.tableview reloadData];
     [self babyDelegate];
-   // baby.scanForPeripherals().begin();
+    //baby.scanForPeripherals().begin();
     //[self.viewMusk setHidden:NO];
 }
 
@@ -100,6 +106,7 @@
     .widthIs(viewX*0.44)
     .heightIs(viewY*0.08);
     [btScan setSd_cornerRadius:@8.0f];
+    [btScan addTarget:self action:@selector(scanQRcode) forControlEvents:UIControlEventTouchUpInside];
 
     //下面提示文字
     UILabel *lbInstr = [UILabel new];
@@ -509,7 +516,7 @@
         [textField resignFirstResponder];
         [self confirmPa];
     }
-    
+
 }
 
 
@@ -575,6 +582,91 @@
         // [self updateStatus];
     }
 }
+
+//执行扫描二维码
+-(void)scanQRcode{
+    //设置会话
+    AVAuthorizationStatus authStatus =[AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+    //判断摄像头状态是否可用
+    if(authStatus==AVAuthorizationStatusAuthorized){
+        //开始扫描二维码
+        [self startScanQR];
+    }else{
+        NSLog(@"未开启相机权限，请前往设置中开启");
+        [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
+            if (granted) {
+                [self startScanQR];
+            } else {
+                // 拒绝
+            }
+        }];
+    }
+}
+
+//开始扫描
+-(void) startScanQR{
+    self.session = [[AVCaptureSession alloc]init];
+    AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+    AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:device error:nil];
+    [self.session addInput:input];
+    AVCaptureMetadataOutput *output = [[AVCaptureMetadataOutput alloc]init];
+    [output setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
+    [self.session addOutput:output];
+    [output setMetadataObjectTypes:@[AVMetadataObjectTypeQRCode]];
+    AVCaptureVideoPreviewLayer *layer = [[AVCaptureVideoPreviewLayer alloc]initWithSession:self.session];
+    layer.frame = self.view.bounds;
+    [self.view.layer addSublayer:layer];
+    self.layer = layer;
+    [self.session startRunning];
+}
+
+-(void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection{
+    if (metadataObjects.count>0)
+    {
+        //1.获取到扫描的内容
+        AVMetadataMachineReadableCodeObject *object = [metadataObjects lastObject];
+        NSLog(@"扫描的内容==%@",object.stringValue);
+        if(object.stringValue.length>=40){
+        
+            self.deviceprofix = [object.stringValue substringWithRange:NSMakeRange(32, 6)];
+        }
+        if([self.deviceprofix isEqualToString:@"CCP15R"] ||[self.deviceprofix isEqualToString:@"CCP15R"]){
+            [self scan];
+        }else{
+            self.hud.mode = MBProgressHUDModeText;
+            [self.view addSubview:self.hud];
+            self.hud.label.text = @"Device not found!";
+            [self.hud setMinShowTime:3];
+            [self.hud showAnimated:YES];
+            [self.hud hideAnimated:YES];
+        }
+        
+        /*
+        int i=0;
+        for(i=0;i<self.devices.count;i++){
+            if([[self.devices objectAtIndex:i].name hasPrefix:strtype]){
+                [baby.centralManager stopScan];
+                [baby cancelAllPeripheralsConnection];
+                [baby.centralManager connectPeripheral:[self.devices objectAtIndex:i] options:nil];
+            }
+        }
+        //没有找到设备
+        if(i==self.devices.count){
+            self.hud.mode = MBProgressHUDModeText;
+            [self.view addSubview:self.hud];
+            self.hud.label.text = @"Device not found!";
+            [self.hud setMinShowTime:3];
+            [self.hud showAnimated:YES];
+            [self.hud hideAnimated:YES];
+        }
+        */
+        //2.停止会话
+        [self.session stopRunning];
+        //3.移除预览图层
+        [self.layer removeFromSuperlayer];
+    }
+}
+
 
 //更新状态
 -(void)updateStatus{

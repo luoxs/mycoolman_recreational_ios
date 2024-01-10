@@ -530,6 +530,9 @@
 				DEVELOPMENT_TEAM = KVC8NZTYE2;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ccp_ios/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "myCOOLMAN RECREATIONAL";
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "This app will use your bluetooth to connect the refrigation";
+				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "This app will use your bluetooth to connect the refrigation";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -558,6 +561,9 @@
 				DEVELOPMENT_TEAM = KVC8NZTYE2;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ccp_ios/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "myCOOLMAN RECREATIONAL";
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "This app will use your bluetooth to connect the refrigation";
+				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "This app will use your bluetooth to connect the refrigation";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
