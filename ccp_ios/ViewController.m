@@ -135,10 +135,10 @@
     .heightIs(viewY*0.08)
     .widthEqualToHeight();
     [btBluetooth setSd_cornerRadius:@8.0f];
-    [btBluetooth addTarget:self action:@selector(scan) forControlEvents:UIControlEventTouchUpInside];
+    [btBluetooth addTarget:self action:@selector(bleTouched) forControlEvents:UIControlEventTouchUpInside];
 }
 
--(void)scan{
+-(void)bleTouched{
     //baby.scanForPeripherals().begin();
     [self.viewMusk setHidden:NO];
     baby.scanForPeripherals().begin();
@@ -626,12 +626,13 @@
         //1.获取到扫描的内容
         AVMetadataMachineReadableCodeObject *object = [metadataObjects lastObject];
         NSLog(@"扫描的内容==%@",object.stringValue);
-        if(object.stringValue.length>=40){
-        
-            self.deviceprofix = [object.stringValue substringWithRange:NSMakeRange(32, 6)];
+        NSArray *strs = [object.stringValue componentsSeparatedByString:@"="];
+        NSString *str2 = strs.count>2 ? strs[2] : nil;
+        if(str2.length >=6){
+            self.deviceprofix = [str2 substringToIndex:6];
         }
         if([self.deviceprofix isEqualToString:@"CCP15R"] ||[self.deviceprofix isEqualToString:@"CCP15R"]){
-            [self scan];
+            [self bleTouched];
         }else{
             self.hud.mode = MBProgressHUDModeText;
             [self.view addSubview:self.hud];
