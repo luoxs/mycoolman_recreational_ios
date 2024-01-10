@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		352D9EEBCD18CE9583D01CDA /* libPods-ccp_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F7BBC899918D0C337AF84C8E /* libPods-ccp_ios.a */; };
+		4518B4E62B4ED9C000AA3258 /* no.png in Resources */ = {isa = PBXBuildFile; fileRef = 4518B4E52B4ED9C000AA3258 /* no.png */; };
 		452B11102B4AD79100F9ADB2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 452B110F2B4AD79100F9ADB2 /* AppDelegate.m */; };
 		452B11132B4AD79100F9ADB2 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 452B11122B4AD79100F9ADB2 /* SceneDelegate.m */; };
 		452B11162B4AD79100F9ADB2 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 452B11152B4AD79100F9ADB2 /* ViewController.m */; };
@@ -58,6 +59,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4518B4E52B4ED9C000AA3258 /* no.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = no.png; sourceTree = "<group>"; };
 		452B110B2B4AD79100F9ADB2 /* ccp_ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ccp_ios.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		452B110E2B4AD79100F9ADB2 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		452B110F2B4AD79100F9ADB2 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -187,6 +189,7 @@
 		452B11372B4ADCE800F9ADB2 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				4518B4E52B4ED9C000AA3258 /* no.png */,
 				452B11382B4ADCE800F9ADB2 /* APP-Surface10_05.png */,
 				452B11392B4ADCE800F9ADB2 /* APP-Surface3_47.png */,
 				452B113A2B4ADCE800F9ADB2 /* APP-Surface17_09.png */,
@@ -332,6 +335,7 @@
 				452B117C2B4ADCE900F9ADB2 /* APP-Surface12_08.png in Resources */,
 				452B11762B4ADCE900F9ADB2 /* APP-Surface4_37.png in Resources */,
 				452B11682B4ADCE900F9ADB2 /* APP-Surface18_13.png in Resources */,
+				4518B4E62B4ED9C000AA3258 /* no.png in Resources */,
 				452B11782B4ADCE900F9ADB2 /* APP-Surface3_17.png in Resources */,
 				452B115F2B4ADCE900F9ADB2 /* APP-Surface4_49.png in Resources */,
 				452B11752B4ADCE900F9ADB2 /* APP-Surface4_09.png in Resources */,

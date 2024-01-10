@@ -20,7 +20,7 @@
 @property (nonatomic,strong) NSString *brand;
 @property (nonatomic,strong) UIView *viewMusk;
 @property (nonatomic,strong) UITableView *tableview;
-
+@property (nonatomic,strong)  UIButton *btclose;
 @property (nonatomic,retain)  UIView * viewPass;  //密码界面
 @property(nonatomic, strong) UITextField *tfPass1;
 @property(nonatomic, strong) UITextField *tfPass2;
@@ -59,7 +59,7 @@
 -(void)viewDidAppear:(BOOL)animated{
     [self.tableview reloadData];
     [self babyDelegate];
-    //baby.scanForPeripherals().begin();
+    baby.scanForPeripherals().begin();
     //[self.viewMusk setHidden:NO];
 }
 
@@ -138,27 +138,6 @@
     [btBluetooth addTarget:self action:@selector(bleTouched) forControlEvents:UIControlEventTouchUpInside];
 }
 
--(void)bleTouched{
-    //baby.scanForPeripherals().begin();
-    [self.viewMusk setHidden:NO];
-    baby.scanForPeripherals().begin();
-    
-    [self.tfPass1 setHidden:YES];
-    [self.tfPass2 setHidden:YES];
-    [self.tfPass3 setHidden:YES];
-    
-   // self.hud = [[MBProgressHUD alloc]initWithView:self.body];
-    self.hud = [[MBProgressHUD alloc]initWithView:self.viewPass];
-    [self.viewPass addSubview:self.hud];
-    self.hud.mode = MBProgressHUDModeIndeterminate;
-    
-    [self.hud setOffset:CGPointMake(0, -150 *self.view.height/844.0)];
-    //self.hud.label.text = @"Scan bluetooth";
-    self.hud.label.text = NSLocalizedString(@"scan", nil);
-    [self.hud showAnimated:YES];
-    [self.hud hideAnimated:YES afterDelay:10];
-}
-
 
 #pragma  - mark 弹窗
 -(void)creatview{
@@ -170,6 +149,26 @@
     self.viewMusk = [[UIView alloc] initWithFrame:muskFrame];
     [self.viewMusk setBackgroundColor:[UIColor colorWithRed:1/255.0 green:1/255.0 blue:1/255.0 alpha:0.4]];
     [self.view addSubview:self.viewMusk];
+    
+    [self.viewMusk addSubview:self.tableview];
+    [self.tableview setBackgroundColor:[UIColor whiteColor]];
+    self.tableview.sd_layout
+        .centerXEqualToView(self.viewMusk)
+        .widthRatioToView(self.viewMusk, 0.9)
+        .centerYEqualToView(self.viewMusk)
+        .heightRatioToView(self.viewMusk, 0.5);
+    self.tableview.layer.cornerRadius = 10.0f;
+    self.tableview.layer.masksToBounds = YES;
+    
+    self.btclose = [UIButton new];
+    [self.btclose setImage:[UIImage imageNamed:@"no"] forState:UIControlStateNormal];
+    [self.viewMusk addSubview:self.btclose];
+    self.btclose.sd_layout
+        .rightEqualToView(self.tableview)
+        .bottomSpaceToView(self.tableview, 0)
+        .widthIs(self.view.size.width/10.0)
+        .heightEqualToWidth();
+    [self.btclose addTarget:self action:@selector(closeTableView) forControlEvents:UIControlEventTouchUpInside];
     
     CGRect passFrame = CGRectMake(self.viewMusk.origin.x+30*rwidth, self.viewMusk.origin.y+202*rheight, 330*rwidth, 330*rheight);
     //[self.viewPass setBackgroundColor:[UIColor colorWithRed:200.0/255.0 green:101.0/255.0 blue:69.0/255.0 alpha:1]];
@@ -252,30 +251,33 @@
     [baby setBlockOnDiscoverToPeripherals:^(CBCentralManager *central, CBPeripheral *peripheral, NSDictionary *advertisementData, NSNumber *RSSI) {
         NSLog(@"Device discovered :%@",peripheral.name);
         
-//        if(([peripheral.name hasPrefix:@"CCA"]||[peripheral.name hasPrefix:@"GCA"]) && ![self.devices containsObject:peripheral])  {
         /*
-        NSString *advertiseName = advertisementData[@"kCBAdvDataLocalName"];
-        if([peripheral.name hasPrefix:@"CCP15R"]||[peripheral.name hasPrefix:@"CCP20R"]){
+        NSString *advertiseName = advertisementData[@"Local Name"];
+        if([advertiseName hasPrefix:@"CCP15R"]||[advertiseName hasPrefix:@"CCP15R"]||[advertiseName hasPrefix:@"EVA"]||[advertiseName hasPrefix:@"GCA"])  {
             [weakSelf.devices addObject:peripheral];
             [weakSelf.localNames addObject:advertiseName];
-             weakSelf.currPeripheral = peripheral;
+            // weakSelf.currPeripheral = peripheral;
             [weakSelf.tableview reloadData];
             if([weakSelf.devices count]>5){
-                 [central stopScan];
+                [central stopScan];
             }
-            if([advertiseName hasPrefix:@"CCP15R"]) {
-                weakSelf.brand = @"CCP15R";
-            }else {
-                weakSelf.brand = @"CCP20R";
+            if([advertiseName hasPrefix:@"EVA24"]) {
+                weakSelf.brand = @"EVA24VTR";
+            }else if([advertiseName hasPrefix:@"EVA12"]){
+                weakSelf.brand = @"EVA12VTR";
+            }else{
+                weakSelf.brand = @"EVA2700RV";
             }
-        }*/
-        
-        if([peripheral.name hasPrefix:@"CCP15R"] ||[peripheral.name hasPrefix:@"CCP20R"])  {
+        }
+        */
+    
+        if([peripheral.name hasPrefix:@"CCP15R"] ||[peripheral.name hasPrefix:@"CCP20R"]){
             [weakSelf.devices addObject:peripheral];
-            [baby.centralManager connectPeripheral:peripheral options:nil];
+            [weakSelf.tableview reloadData];
+          //  [baby.centralManager connectPeripheral:peripheral options:nil];
         }
         // [weakSelf.tableView reloadData];
-        if([weakSelf.devices count]>7){
+        if([weakSelf.devices count]>5){
             [central stopScan];
         }
     }];
@@ -449,6 +451,37 @@
      }];
 }
 
+//按下蓝牙按钮
+
+-(void)bleTouched{
+    [self.viewMusk setHidden:NO];
+    [self.tableview setHidden:NO];
+    [self.btclose setHidden:NO];
+    [self.viewPass setHidden:YES];
+}
+
+-(void) deviceSelected{
+    //baby.scanForPeripherals().begin();
+    //[self.viewMusk setHidden:NO];
+   // [self.tableview setHidden:NO];
+    baby.scanForPeripherals().begin();
+    
+    [self.tfPass1 setHidden:YES];
+    [self.tfPass2 setHidden:YES];
+    [self.tfPass3 setHidden:YES];
+    
+   // self.hud = [[MBProgressHUD alloc]initWithView:self.body];
+    self.hud = [[MBProgressHUD alloc]initWithView:self.viewPass];
+    [self.viewPass addSubview:self.hud];
+    self.hud.mode = MBProgressHUDModeIndeterminate;
+    
+    [self.hud setOffset:CGPointMake(0, -150 *self.view.height/844.0)];
+    //self.hud.label.text = @"Scan bluetooth";
+    self.hud.label.text = NSLocalizedString(@"scan", nil);
+    [self.hud showAnimated:YES];
+    [self.hud hideAnimated:YES afterDelay:10];
+}
+
 
 #pragma mark tableviewdatasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -465,8 +498,8 @@
     [cell setBackgroundColor:[UIColor whiteColor]];
     
     CBPeripheral *peripheral = [self.devices objectAtIndex:indexPath.row];
-    NSString *advertiseName = [self.localNames objectAtIndex:indexPath.row];
-    [cell.textLabel setText:advertiseName];
+   // NSString *advertiseName = [self.localNames objectAtIndex:indexPath.row];
+    [cell.textLabel setText:peripheral.name];
     [cell.textLabel setTextColor:[UIColor blackColor]];
     
     return cell;
@@ -550,9 +583,10 @@
 
 
 //关闭密码框
--(void)closepass{
-    
-    
+-(void)closeTableView{
+    [self.tableview setHidden:YES];
+    [self.btclose setHidden:YES];
+    [self.viewMusk setHidden:YES];
 }
 
 
