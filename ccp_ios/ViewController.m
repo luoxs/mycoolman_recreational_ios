@@ -147,7 +147,7 @@
     
     CGRect muskFrame = CGRectMake(parentFrame.origin.x, parentFrame.origin.y, parentFrame.size.width, parentFrame.size.height);
     self.viewMusk = [[UIView alloc] initWithFrame:muskFrame];
-    [self.viewMusk setBackgroundColor:[UIColor colorWithRed:1/255.0 green:1/255.0 blue:1/255.0 alpha:0.4]];
+    [self.viewMusk setBackgroundColor:[UIColor colorWithRed:1/255.0 green:1/255.0 blue:1/255.0 alpha:0.5]];
     [self.view addSubview:self.viewMusk];
     
     [self.viewMusk addSubview:self.tableview];
@@ -426,7 +426,8 @@
                 weakSelf.dataRead.crcL = r[20];   //CRC校验低八位
                 weakSelf.dataRead.end = r[21];  //通信结束
                 if(self.dataRead.gc == 0x00){
-                    NSLog(@"请输入密码");
+                    NSLog(@"输入密码");
+                    [weakSelf.viewPass setHidden:NO];
                 }else{
                     [weakSelf updateStatus];
                 }
@@ -464,7 +465,7 @@
     //baby.scanForPeripherals().begin();
     //[self.viewMusk setHidden:NO];
    // [self.tableview setHidden:NO];
-    baby.scanForPeripherals().begin();
+    //baby.scanForPeripherals().begin();
     
     [self.tfPass1 setHidden:YES];
     [self.tfPass2 setHidden:YES];
@@ -477,7 +478,7 @@
     
     [self.hud setOffset:CGPointMake(0, -150 *self.view.height/844.0)];
     //self.hud.label.text = @"Scan bluetooth";
-    self.hud.label.text = NSLocalizedString(@"scan", nil);
+    self.hud.label.text = NSLocalizedString(@"connect", nil);
     [self.hud showAnimated:YES];
     [self.hud hideAnimated:YES afterDelay:10];
 }
@@ -507,9 +508,13 @@
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [self.tableview setHidden:YES];
+    [self.btclose setHidden:YES];
+    
     [baby.centralManager stopScan];
     [baby cancelAllPeripheralsConnection];
     [baby.centralManager connectPeripheral:[self.devices objectAtIndex:indexPath.row] options:nil];
+
     
     self.hud = [MBProgressHUD showHUDAddedTo:self.viewMusk animated:YES];
     self.hud.mode = MBProgressHUDModeIndeterminate;
@@ -660,22 +665,41 @@
         //1.获取到扫描的内容
         AVMetadataMachineReadableCodeObject *object = [metadataObjects lastObject];
         NSLog(@"扫描的内容==%@",object.stringValue);
-        NSArray *strs = [object.stringValue componentsSeparatedByString:@"="];
-        NSString *str2 = strs.count>2 ? strs[2] : nil;
-        if(str2.length >=6){
-            self.deviceprofix = [str2 substringToIndex:6];
+        NSString *strtype = [[NSString alloc]init];
+        if(object.stringValue.length>=10){
+            NSArray *strs = [object.stringValue componentsSeparatedByString:@"="];
+            if(strs.count >=2){
+                strtype = [strs objectAtIndex:2];
+            }
         }
-        if([self.deviceprofix isEqualToString:@"CCP15R"] ||[self.deviceprofix isEqualToString:@"CCP15R"]){
-            [self bleTouched];
-        }else{
+        NSLog(@"---------%@",strtype);
+        int i=0;
+        for(i=0;i<self.devices.count;i++){
+            if([[self.devices objectAtIndex:i].name isEqualToString:strtype]){
+                [self.viewMusk setHidden:NO];
+                [self.tableview setHidden:YES];
+                [self.btclose setHidden:YES];
+                [self.viewPass setHidden:YES];
+                [baby.centralManager stopScan];
+                [baby cancelAllPeripheralsConnection];
+                [baby.centralManager connectPeripheral:[self.devices objectAtIndex:i] options:nil];
+                //2.停止会话
+                [self.session stopRunning];
+                //3.移除预览图层
+                [self.layer removeFromSuperlayer];
+                return;
+            }
+        }
+        //没有找到设备
+       
             self.hud.mode = MBProgressHUDModeText;
             [self.view addSubview:self.hud];
             self.hud.label.text = @"Device not found!";
             [self.hud setMinShowTime:3];
             [self.hud showAnimated:YES];
             [self.hud hideAnimated:YES];
-        }
         
+    
         /*
         int i=0;
         for(i=0;i<self.devices.count;i++){
