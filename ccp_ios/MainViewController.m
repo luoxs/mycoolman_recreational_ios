@@ -16,6 +16,7 @@
 @property (nonatomic,retain) UILabel *label1;  //开机提示
 @property (nonatomic,retain) UILabel *label2;  //开机提示
 @property (nonatomic,retain) UILabel *label3;  //提示温度
+@property (nonatomic,retain) UIImageView *img;  //提示温度
 
 @property (nonatomic,retain) UILabel *lbselect;  //提示设置温度
 @property (nonatomic,retain) UILabel *lbcurrent;  //当前温度
@@ -59,6 +60,7 @@
     
     [self.label1 setHidden:NO];
     [self.label2 setHidden:NO];
+    [self.img setHidden:NO];
     [self.lbselect setHidden:YES];
     [self.lbmode setHidden:YES];
     [self.lbcurrent setHidden:YES];
@@ -77,13 +79,13 @@
     //double frameHeight = 564;
     double viewX = [UIScreen mainScreen].bounds.size.width;
     double viewY = [UIScreen mainScreen].bounds.size.height;
-    [self.view setBackgroundColor:[UIColor colorWithRed:42.0/255 green:70.0/255 blue:90.0/255 alpha:1.0]];
+    [self.view setBackgroundColor:[UIColor colorWithRed:142.0/255 green:150.0/255 blue:143.0/255 alpha:1.0]];
     
 #pragma mark 导航栏
     //导航栏
     UIView *viewTop = [UIView new];
     [self.view addSubview:viewTop];
-    [viewTop setBackgroundColor:[UIColor colorWithRed:200.0/255 green:101.0/255 blue:69.0/255 alpha:1.0]];
+    [viewTop setBackgroundColor:[UIColor colorWithRed:105.0/255 green:79.0/255 blue:83.0/255 alpha:1.0]];
     viewTop.sd_layout
     .leftEqualToView(self.view)
     .rightEqualToView(self.view)
@@ -106,8 +108,6 @@
     [lblogo setAdjustsFontSizeToFitWidth:YES];
     
     
-    
-    
     //显示功能
     self.lbmode = [UILabel new];
     [self.view addSubview:self.lbmode];
@@ -125,7 +125,7 @@
     //功能选择
     self.lbselect = [UILabel new];
     [self.view addSubview:self.lbselect];
-    [self.lbselect setTextColor:[UIColor colorWithRed:152.0/255 green:159.0/255 blue:175.0/255 alpha:1.0]];
+    [self.lbselect setTextColor:[UIColor colorWithRed:212.0/255 green:211.0/255 blue:207.0/255 alpha:1.0]];
     [self.lbselect setTextAlignment:NSTextAlignmentCenter];
     [self.lbselect sizeToFit];
     [self.lbselect setText:@"Preselected Temperature"];
@@ -144,7 +144,7 @@
     [self.label1 setTextAlignment:NSTextAlignmentCenter];
     [self.label1 setNumberOfLines:4];
     [self.label1 sizeToFit];
-    [self.label1 setText:@"You TREKOOL is\nconnected to Bluetooth."];
+    [self.label1 setText:@"You MyCoolman is\nconnected to Bluetooth."];
     self.label1.sd_layout
     .centerXEqualToView(self.view)
     .centerYIs(viewY*0.38)
@@ -166,6 +166,17 @@
     .centerYIs(viewY*0.51)
     .widthIs(viewX*0.618)
     .heightIs(viewY*0.142);
+    
+    //文字 recreational seris
+    self.img = [UIImageView new];
+    [self.img setImage:[UIImage imageNamed:@"APP-Surface10_05"]];
+    [self.view addSubview:self.img];
+    self.img.sd_layout
+    .centerXEqualToView(self.view)
+    .widthRatioToView(self.view, 0.88)
+    .centerYIs(viewY*0.222)
+    .heightIs(viewY*0.115);
+    
     
     //  //下面提示文字3
     self.label3 = [UILabel new];
@@ -226,7 +237,7 @@
     self.lbsetting = [UILabel new];
     [self.view addSubview:self.lbsetting];
     [self.lbsetting setTextColor:[UIColor whiteColor]];
-    [self.lbsetting setTextColor:[UIColor colorWithRed:152.0/255 green:159.0/255 blue:175.0/255 alpha:1.0]];
+    [self.lbsetting setTextColor:[UIColor colorWithRed:212.0/255 green:211.0/255 blue:207.0/255 alpha:1.0]];
     [self.lbsetting setTextAlignment:NSTextAlignmentCenter];
     [self.lbsetting sizeToFit];
     [self.lbsetting setText:@"-18°C"];
@@ -355,7 +366,7 @@
     [label11 setAdjustsFontSizeToFitWidth:YES];
     label11.sd_layout
     .centerXIs(viewX*0.166)
-    .centerYIs(viewY*0.91)
+    .centerYIs(viewY*0.92)
     .widthIs(viewX*0.154)
     .heightIs(viewY*0.035);
     
@@ -370,7 +381,7 @@
     [label12 setAdjustsFontSizeToFitWidth:YES];
     label12.sd_layout
     .centerXIs(viewX*0.39)
-    .centerYIs(viewY*0.91)
+    .centerYIs(viewY*0.92)
     .widthIs(viewX*0.206)
     .heightIs(viewY*0.035);
     
@@ -385,7 +396,7 @@
     [label13 setAdjustsFontSizeToFitWidth:YES];
     label13.sd_layout
     .centerXIs(viewX*0.615)
-    .centerYIs(viewY*0.91)
+    .centerYIs(viewY*0.92)
     .widthIs(viewX*0.162)
     .heightIs(viewY*0.035);
     
@@ -400,7 +411,7 @@
     [label14 setAdjustsFontSizeToFitWidth:YES];
     label14.sd_layout
     .centerXIs(viewX*0.838)
-    .centerYIs(viewY*0.91)
+    .centerYIs(viewY*0.92)
     .widthIs(viewX*0.092)
     .heightIs(viewY*0.035);
 }
@@ -542,6 +553,7 @@
     [self.lbmode setHidden:YES];
     [self.label1 setHidden:NO];
     [self.label2 setHidden:NO];
+    [self.img setHidden:NO];
     [self.lbselect setHidden:YES];
     [self.lbcurrent setHidden:YES];
     [self.lbsetting setHidden:YES];
@@ -581,6 +593,7 @@
 -(void) settemp{
     [self.lbmode setHidden:NO];
     [self.label1 setHidden:YES];
+    [self.img setHidden:YES];
     [self.label2 setHidden:YES];
     [self.lbselect setHidden:NO];
     [self.lbcurrent setHidden:NO];
@@ -602,6 +615,7 @@
 -(void) setbattery{
     [self.lbmode setHidden:NO];
     [self.label1 setHidden:YES];
+    [self.img setHidden:YES];
     [self.label2 setHidden:YES];
     [self.lbselect setHidden:YES];
     [self.lbcurrent setHidden:YES];
@@ -623,6 +637,7 @@
 -(void) setturbo{
     [self.lbmode setHidden:NO];
     [self.label1 setHidden:YES];
+    [self.img setHidden:YES];
     [self.label2 setHidden:YES];
     [self.lbselect setHidden:YES];
     [self.lbcurrent setHidden:YES];

@@ -68,17 +68,42 @@
     
     double viewX = [UIScreen mainScreen].bounds.size.width;
     double viewY = [UIScreen mainScreen].bounds.size.height;
-    [self.view setBackgroundColor:[UIColor colorWithRed:42.0/255 green:70.0/255 blue:90.0/255 alpha:1.0]];
+    [self.view setBackgroundColor:[UIColor colorWithRed:142.0/255 green:150.0/255 blue:143.0/255 alpha:1.0]];
     
     //导航栏
     UIView *viewTop = [UIView new];
     [self.view addSubview:viewTop];
-    [viewTop setBackgroundColor:[UIColor colorWithRed:200.0/255 green:101.0/255 blue:69.0/255 alpha:1.0]];
+    [viewTop setBackgroundColor:[UIColor colorWithRed:105.0/255 green:79.0/255 blue:83.0/255 alpha:1.0]];
     viewTop.sd_layout
     .leftEqualToView(self.view)
     .rightEqualToView(self.view)
     .topEqualToView(self.view)
     .heightRatioToView(self.view, 0.1);
+    
+    //商标
+    UILabel *lblogo = [UILabel new];
+    [self.view addSubview:lblogo];
+    [lblogo setTextColor:[UIColor whiteColor]];
+    [lblogo setFont:[UIFont fontWithName:@"Arial" size:24]];
+    [lblogo setTextAlignment:NSTextAlignmentCenter];
+    [lblogo sizeToFit];
+    [lblogo setText:@"MY COOLMAN"];
+    lblogo.sd_layout
+    .centerXEqualToView(self.view)
+    .topSpaceToView(self.view, viewY*0.06)
+    .widthIs(viewX*0.618)
+    .heightRatioToView(self.view, 0.04);
+    [lblogo setAdjustsFontSizeToFitWidth:YES];
+    
+    //文字 recreational seris
+    UIImageView *imgRCeational = [UIImageView new];
+    [imgRCeational setImage:[UIImage imageNamed:@"APP-Surface10_05"]];
+    [self.view addSubview:imgRCeational];
+    imgRCeational.sd_layout
+    .centerXEqualToView(self.view)
+    .widthRatioToView(self.view, 0.88)
+    .centerYIs(viewY*0.222)
+    .heightIs(viewY*0.115);
     
     //中间提示文字
     UILabel *lbInstruction = [UILabel new];
@@ -87,18 +112,18 @@
     [lbInstruction setTextAlignment:NSTextAlignmentCenter];
     [lbInstruction setNumberOfLines:4];
     [lbInstruction sizeToFit];
-    [lbInstruction setText:@"To connect your TREKOOL\nwith Bluetooth\nensure the cooler is set to Bluetooth ON"];
+    [lbInstruction setText:@"To connect your MyCoolman\nwith Bluetooth\nensure the cooler is set to Bluetooth ON"];
     lbInstruction.sd_layout
     .centerXEqualToView(self.view)
     .centerYIs(viewY*0.42)
-    .widthIs(viewX*0.618)
+    .widthIs(viewX*0.622)
     .heightIs(viewY*0.142);
     [lbInstruction setAdjustsFontSizeToFitWidth:YES];
     
     //扫描二维码
     UIButton *btScan = [UIButton new];
     [self.view addSubview:btScan];
-    [btScan setBackgroundColor:[UIColor colorWithRed:200.0/255 green:101.0/255 blue:69.0/255 alpha:1.0]];
+    [btScan setBackgroundColor:[UIColor colorWithRed:105.0/255 green:79.0/255 blue:83.0/255 alpha:1.0]];
     [btScan setTitle:@"Scan QR Code" forState:UIControlStateNormal];
     btScan.sd_layout
     .centerXEqualToView(self.view)
@@ -151,7 +176,7 @@
     [self.view addSubview:self.viewMusk];
     
     [self.viewMusk addSubview:self.tableview];
-    [self.tableview setBackgroundColor:[UIColor whiteColor]];
+    [self.tableview setBackgroundColor:[UIColor colorWithRed:212.0/255 green:211.0/255 blue:207.0/255 alpha:1.0]];
     self.tableview.sd_layout
         .centerXEqualToView(self.viewMusk)
         .widthRatioToView(self.viewMusk, 0.9)
