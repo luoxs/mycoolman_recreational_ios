@@ -10,6 +10,7 @@
 #import "SDAutoLayout.h"
 #import "MBProgressHUD.h"
 #import "crc.h"
+#import "SettingViewController.h"
 
 @interface MainViewController ()
 @property (nonatomic,retain) UILabel *lbmode;  //提示功能状态
@@ -113,6 +114,19 @@
     .widthIs(0.039*viewX)
     .heightIs(0.031*viewY);
     
+    
+    //蓝牙标志
+    //47 86 ，77，136
+    UIImageView *imgBle =[UIImageView new];
+    [self.view addSubview:imgBle];
+    [imgBle setImage:[UIImage imageNamed:@"ble"]];
+    imgBle.sd_layout
+    .leftSpaceToView(self.view, 0.76*viewX)
+    .centerYEqualToView(imglogo)
+    .heightRatioToView(btReturn, 1.0)
+    .widthIs(0.072*viewX);
+    
+    
     //设置
     //673 88 ，721，698
     UIButton *btSetting =[UIButton new];
@@ -123,8 +137,7 @@
     .topSpaceToView(self.view, 0.055*viewY)
     .widthIs(0.062*viewX)
     .heightEqualToWidth();
-    
-    
+    [btSetting addTarget:self action:@selector(goSetting) forControlEvents:UIControlEventTouchUpInside];
     
     //显示功能
     self.lbmode = [UILabel new];
@@ -674,17 +687,20 @@
     [self.lbmode setText:@"Turbo Modes"];
 }
 
-
+-(void)goSetting{
+    SettingViewController *settingViewController = [[SettingViewController alloc]init];
+    [settingViewController setModalPresentationStyle:UIModalPresentationFullScreen];
+    settingViewController.currPeripheral = self.currPeripheral;
+    settingViewController.characteristic = self.characteristic;
+    [self presentViewController:settingViewController animated:YES completion:nil];
+}
 
 //升温
 -(void) add{
     if(self.characteristic != nil){
-        int setting = self.dataRead.tempcool;
-
         Byte  write[8];
         write[0] = 0xAA;
         write[1] = 0x03;
-        
         write[2] = self.dataRead.tempcool + 1;
         write[3] = (Byte)self.bytePass1;
         write[4] = (Byte)self.bytePass2 *16+self.bytePass3;

@@ -60,6 +60,7 @@
 		45A53D0A2B52330E00CD55DE /* ble.png in Resources */ = {isa = PBXBuildFile; fileRef = 45A53D072B52330E00CD55DE /* ble.png */; };
 		45A53D0B2B52330E00CD55DE /* setting.png in Resources */ = {isa = PBXBuildFile; fileRef = 45A53D082B52330E00CD55DE /* setting.png */; };
 		45A53D0C2B52330E00CD55DE /* MYCOOLMAN.png in Resources */ = {isa = PBXBuildFile; fileRef = 45A53D092B52330E00CD55DE /* MYCOOLMAN.png */; };
+		45A53D0F2B5279DE00CD55DE /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45A53D0E2B5279DE00CD55DE /* SettingViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -120,11 +121,13 @@
 		452B115B2B4ADCE900F9ADB2 /* APP-Surface19_12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "APP-Surface19_12.png"; sourceTree = "<group>"; };
 		452B11802B4AED5000F9ADB2 /* MainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		452B11812B4AED5000F9ADB2 /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
-		45A53D042B5231E700CD55DE /* PassViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PassViewController.h; path = ccp_ios/PassViewController.h; sourceTree = "<group>"; };
-		45A53D052B5231E700CD55DE /* PassViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = PassViewController.m; path = ccp_ios/PassViewController.m; sourceTree = "<group>"; };
+		45A53D042B5231E700CD55DE /* PassViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PassViewController.h; sourceTree = "<group>"; };
+		45A53D052B5231E700CD55DE /* PassViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PassViewController.m; sourceTree = "<group>"; };
 		45A53D072B52330E00CD55DE /* ble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ble.png; sourceTree = "<group>"; };
 		45A53D082B52330E00CD55DE /* setting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = setting.png; sourceTree = "<group>"; };
 		45A53D092B52330E00CD55DE /* MYCOOLMAN.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MYCOOLMAN.png; sourceTree = "<group>"; };
+		45A53D0D2B5279DE00CD55DE /* SettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
+		45A53D0E2B5279DE00CD55DE /* SettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
 		89B0D723B90E64F241644A2C /* Pods-ccp_ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ccp_ios.debug.xcconfig"; path = "Target Support Files/Pods-ccp_ios/Pods-ccp_ios.debug.xcconfig"; sourceTree = "<group>"; };
 		9E2212E246D9E83CBBFD1E46 /* Pods-ccp_ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ccp_ios.release.xcconfig"; path = "Target Support Files/Pods-ccp_ios/Pods-ccp_ios.release.xcconfig"; sourceTree = "<group>"; };
 		F7BBC899918D0C337AF84C8E /* libPods-ccp_ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ccp_ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -145,8 +148,6 @@
 		452B11022B4AD79000F9ADB2 = {
 			isa = PBXGroup;
 			children = (
-				45A53D042B5231E700CD55DE /* PassViewController.h */,
-				45A53D052B5231E700CD55DE /* PassViewController.m */,
 				452B110D2B4AD79100F9ADB2 /* ccp_ios */,
 				452B110C2B4AD79100F9ADB2 /* Products */,
 				DA951BCBFA6E58C5BA5F91E0 /* Pods */,
@@ -173,8 +174,12 @@
 				452B11122B4AD79100F9ADB2 /* SceneDelegate.m */,
 				452B11142B4AD79100F9ADB2 /* ViewController.h */,
 				452B11152B4AD79100F9ADB2 /* ViewController.m */,
+				45A53D042B5231E700CD55DE /* PassViewController.h */,
+				45A53D052B5231E700CD55DE /* PassViewController.m */,
 				452B11802B4AED5000F9ADB2 /* MainViewController.h */,
 				452B11812B4AED5000F9ADB2 /* MainViewController.m */,
+				45A53D0D2B5279DE00CD55DE /* SettingViewController.h */,
+				45A53D0E2B5279DE00CD55DE /* SettingViewController.m */,
 				452B11172B4AD79100F9ADB2 /* Main.storyboard */,
 				452B111A2B4AD79200F9ADB2 /* Assets.xcassets */,
 				452B111C2B4AD79200F9ADB2 /* LaunchScreen.storyboard */,
@@ -406,6 +411,7 @@
 				452B11342B4ADA3C00F9ADB2 /* DataWrite.m in Sources */,
 				452B11212B4AD79200F9ADB2 /* main.m in Sources */,
 				452B11132B4AD79100F9ADB2 /* SceneDelegate.m in Sources */,
+				45A53D0F2B5279DE00CD55DE /* SettingViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
