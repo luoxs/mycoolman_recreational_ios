@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "-[ViewController closeTableView]:ViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[ViewController captureOutput:didOutputMetadataObjects:fromConnection:]:ViewController.m">
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>
