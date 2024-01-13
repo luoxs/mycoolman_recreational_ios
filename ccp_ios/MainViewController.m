@@ -41,6 +41,8 @@
 @property Byte bytePass2;
 @property Byte bytePass3;
 
+@property (nonatomic,retain) NSTimer *timer;
+
 @property (nonatomic,retain) MBProgressHUD *hud;
 
 @end
@@ -75,6 +77,24 @@
     [self.btoff setHidden:YES];
 }
 
+-(void) viewDidAppear:(BOOL)animated{
+    [self babyDelegate];
+//    self.timer = [NSTimer timerWithTimeInterval:1 repeats:YES block:^(NSTimer * _Nonnull timer) {
+//        [self getStatus];
+//    }];
+    self.timer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(getStatus) userInfo:nil repeats:YES];
+    [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
+   // [self getStatus];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+  //  [super viewDidDisappear:animated];
+    if ([self.timer isValid]) {
+        [self.timer invalidate];
+    }
+    self.timer = nil;
+}
+
 -(void)setAutoLayout{
     //double frameWidth = 272;
     //double frameHeight = 564;
@@ -88,20 +108,20 @@
     [self.view addSubview:viewTop];
     [viewTop setBackgroundColor:[UIColor colorWithRed:105.0/255 green:79.0/255 blue:83.0/255 alpha:1.0]];
     viewTop.sd_layout
-    .leftEqualToView(self.view)
-    .rightEqualToView(self.view)
-    .topEqualToView(self.view)
-    .heightRatioToView(self.view, 0.1);
+        .leftEqualToView(self.view)
+        .rightEqualToView(self.view)
+        .topEqualToView(self.view)
+        .heightRatioToView(self.view, 0.1);
     
     //商标
     UIImageView *imglogo = [UIImageView new];
     [self.view addSubview:imglogo];
     [imglogo setImage:[UIImage imageNamed:@"MYCOOLMAN"]];
     imglogo.sd_layout
-    .centerXEqualToView(self.view)
-    .centerYIs(viewY * 0.07)
-    .widthIs(viewX*0.443)
-    .heightRatioToView(self.view, 0.031);
+        .centerXEqualToView(self.view)
+        .centerYIs(viewY * 0.07)
+        .widthIs(viewX*0.443)
+        .heightRatioToView(self.view, 0.031);
     
     //返回
     //47 86 ，77，136
@@ -109,10 +129,10 @@
     [self.view addSubview:btReturn];
     [btReturn setImage:[UIImage imageNamed:@"APP-Surface16_05"] forState:UIControlStateNormal];
     btReturn.sd_layout
-    .leftSpaceToView(self.view, 0.062*viewX)
-    .topSpaceToView(self.view, 0.054*viewY)
-    .widthIs(0.039*viewX)
-    .heightIs(0.031*viewY);
+        .leftSpaceToView(self.view, 0.062*viewX)
+        .topSpaceToView(self.view, 0.054*viewY)
+        .widthIs(0.039*viewX)
+        .heightIs(0.031*viewY);
     
     
     //蓝牙标志
@@ -121,10 +141,10 @@
     [self.view addSubview:imgBle];
     [imgBle setImage:[UIImage imageNamed:@"ble"]];
     imgBle.sd_layout
-    .leftSpaceToView(self.view, 0.76*viewX)
-    .centerYEqualToView(imglogo)
-    .heightRatioToView(btReturn, 1.0)
-    .widthIs(0.072*viewX);
+        .leftSpaceToView(self.view, 0.76*viewX)
+        .centerYEqualToView(imglogo)
+        .heightRatioToView(btReturn, 1.0)
+        .widthIs(0.072*viewX);
     
     
     //设置
@@ -133,10 +153,10 @@
     [self.view addSubview:btSetting];
     [btSetting setImage:[UIImage imageNamed:@"setting"] forState:UIControlStateNormal];
     btSetting.sd_layout
-    .leftSpaceToView(self.view, 0.876*viewX)
-    .topSpaceToView(self.view, 0.055*viewY)
-    .widthIs(0.062*viewX)
-    .heightEqualToWidth();
+        .leftSpaceToView(self.view, 0.876*viewX)
+        .topSpaceToView(self.view, 0.055*viewY)
+        .widthIs(0.062*viewX)
+        .heightEqualToWidth();
     [btSetting addTarget:self action:@selector(goSetting) forControlEvents:UIControlEventTouchUpInside];
     
     //显示功能
@@ -147,10 +167,10 @@
     [self.lbmode sizeToFit];
     [self.lbmode setText:@"Current Temperature"];
     self.lbmode.sd_layout
-    .centerXEqualToView(self.view)
-    .centerYIs(viewY*0.177)
-    .widthIs(viewX*0.618)
-    .heightIs(viewY*0.142);
+        .centerXEqualToView(self.view)
+        .centerYIs(viewY*0.177)
+        .widthIs(viewX*0.618)
+        .heightIs(viewY*0.142);
     [self.lbmode setAdjustsFontSizeToFitWidth:YES];
     
     //功能选择
@@ -161,10 +181,10 @@
     [self.lbselect sizeToFit];
     [self.lbselect setText:@"Preselected Temperature"];
     self.lbselect.sd_layout
-    .centerXEqualToView(self.view)
-    .centerYIs(viewY*0.716)
-    .widthIs(viewX*0.618)
-    .heightIs(viewY*0.142);
+        .centerXEqualToView(self.view)
+        .centerYIs(viewY*0.716)
+        .widthIs(viewX*0.618)
+        .heightIs(viewY*0.142);
     [self.lbmode setAdjustsFontSizeToFitWidth:YES];
     
 #pragma mark 首页二页文字
@@ -177,10 +197,10 @@
     [self.label1 sizeToFit];
     [self.label1 setText:@"You MyCoolman is\nconnected to Bluetooth."];
     self.label1.sd_layout
-    .centerXEqualToView(self.view)
-    .centerYIs(viewY*0.38)
-    .widthIs(viewX*0.618)
-    .heightIs(viewY*0.142);
+        .centerXEqualToView(self.view)
+        .centerYIs(viewY*0.38)
+        .widthIs(viewX*0.618)
+        .heightIs(viewY*0.142);
     [self.label1 setAdjustsFontSizeToFitWidth:YES];
     
     //下面提示文字2
@@ -193,20 +213,20 @@
     [self.label2 setText:@"You can now turn it on\nand control all functions\nwith the App"];
     [self.label2 setAdjustsFontSizeToFitWidth:YES];
     self.label2.sd_layout
-    .centerXEqualToView(self.view)
-    .centerYIs(viewY*0.51)
-    .widthIs(viewX*0.618)
-    .heightIs(viewY*0.142);
+        .centerXEqualToView(self.view)
+        .centerYIs(viewY*0.51)
+        .widthIs(viewX*0.618)
+        .heightIs(viewY*0.142);
     
     //文字 recreational seris
     self.img = [UIImageView new];
     [self.img setImage:[UIImage imageNamed:@"APP-Surface10_05"]];
     [self.view addSubview:self.img];
     self.img.sd_layout
-    .centerXEqualToView(self.view)
-    .widthRatioToView(self.view, 0.88)
-    .centerYIs(viewY*0.222)
-    .heightIs(viewY*0.115);
+        .centerXEqualToView(self.view)
+        .widthRatioToView(self.view, 0.88)
+        .centerYIs(viewY*0.222)
+        .heightIs(viewY*0.115);
     
     
     //  //下面提示文字3
@@ -219,10 +239,10 @@
     [self.label2 setText:@"You can now turn it on\nand control all functions\nwith the App"];
     [self.label2 setAdjustsFontSizeToFitWidth:YES];
     self.label2.sd_layout
-    .centerXEqualToView(self.view)
-    .centerYIs(viewY*0.51)
-    .widthIs(viewX*0.618)
-    .heightIs(viewY*0.142);
+        .centerXEqualToView(self.view)
+        .centerYIs(viewY*0.51)
+        .widthIs(viewX*0.618)
+        .heightIs(viewY*0.142);
     
 #pragma mark 温度相关
     //按钮加
@@ -230,10 +250,10 @@
     [self.view addSubview: self.btadd];
     [ self.btadd setBackgroundImage:[UIImage imageNamed:@"APP-Surface5_07"] forState:UIControlStateNormal];
     self.btadd.sd_layout
-    .centerXEqualToView(self.view)
-    .centerYIs(viewY*0.388)
-    .widthIs(viewX*0.162)
-    .heightEqualToWidth();
+        .centerXEqualToView(self.view)
+        .centerYIs(viewY*0.388)
+        .widthIs(viewX*0.162)
+        .heightEqualToWidth();
     [self.btadd addTarget:self action:@selector(add) forControlEvents:UIControlEventTouchUpInside];
     
     //按钮减
@@ -241,14 +261,14 @@
     [self.view addSubview: self.btdrop];
     [ self.btdrop setBackgroundImage:[UIImage imageNamed:@"APP-Surface5_09"] forState:UIControlStateNormal];
     self.btdrop.sd_layout
-    .centerXEqualToView(self.view)
-    .centerYIs(viewY*0.637)
-    .widthIs(viewX*0.162)
-    .heightEqualToWidth();
+        .centerXEqualToView(self.view)
+        .centerYIs(viewY*0.637)
+        .widthIs(viewX*0.162)
+        .heightEqualToWidth();
     [self.btdrop addTarget:self action:@selector(drop) forControlEvents:UIControlEventTouchUpInside];
     
     //富文本
-
+    
     //当前温度
     self.lbcurrent = [UILabel new];
     [self.view addSubview:self.lbcurrent];
@@ -259,10 +279,10 @@
     [self.lbcurrent setAdjustsFontSizeToFitWidth:YES];
     [self.lbcurrent setFont:[UIFont fontWithName:@"Arial" size:60.0]];
     self.lbcurrent.sd_layout
-    .centerXEqualToView(self.view)
-    .centerYIs(viewY*0.26)
-    .widthIs(viewX*0.507)
-    .heightIs(viewY*0.087);
+        .centerXEqualToView(self.view)
+        .centerYIs(viewY*0.26)
+        .widthIs(viewX*0.507)
+        .heightIs(viewY*0.087);
     
     //设置温度
     self.lbsetting = [UILabel new];
@@ -275,10 +295,10 @@
     [self.lbsetting setAdjustsFontSizeToFitWidth:YES];
     [self.lbsetting setFont:[UIFont fontWithName:@"Arial" size:60.0]];
     self.lbsetting.sd_layout
-    .centerXEqualToView(self.view)
-    .centerYIs(viewY*0.518)
-    .widthIs(viewX*0.507)
-    .heightIs(viewY*0.087);
+        .centerXEqualToView(self.view)
+        .centerYIs(viewY*0.518)
+        .widthIs(viewX*0.507)
+        .heightIs(viewY*0.087);
     
     
 #pragma mark 电池选择按钮
@@ -287,10 +307,10 @@
     [self.view addSubview: self.bthigh];
     [ self.bthigh setBackgroundImage:[UIImage imageNamed:@"APP-Surface4_07"] forState:UIControlStateNormal];
     self.bthigh.sd_layout
-    .centerXEqualToView(self.view)
-    .centerYIs(viewY*0.387)
-    .widthIs(viewX*0.43)
-    .heightIs(viewY *0.081);
+        .centerXEqualToView(self.view)
+        .centerYIs(viewY*0.387)
+        .widthIs(viewX*0.43)
+        .heightIs(viewY *0.081);
     [self.bthigh addTarget:self action:@selector(sethigh) forControlEvents:UIControlEventTouchUpInside];
     
     //电池保护中
@@ -298,20 +318,20 @@
     [self.view addSubview: self.btmedium];
     [ self.btmedium setBackgroundImage:[UIImage imageNamed:@"APP-Surface4_17"] forState:UIControlStateNormal];
     self.btmedium.sd_layout
-    .centerXEqualToView(self.view)
-    .centerYIs(viewY*0.5)
-    .widthIs(viewX*0.43)
-    .heightIs(viewY *0.081);
+        .centerXEqualToView(self.view)
+        .centerYIs(viewY*0.5)
+        .widthIs(viewX*0.43)
+        .heightIs(viewY *0.081);
     [self.btmedium addTarget:self action:@selector(setmedium) forControlEvents:UIControlEventTouchUpInside];
     //电池保护低
     self.btlow = [UIButton new];
     [self.view addSubview: self.btlow];
     [ self.btlow setBackgroundImage:[UIImage imageNamed:@"APP-Surface4_27"] forState:UIControlStateNormal];
     self.btlow.sd_layout
-    .centerXEqualToView(self.view)
-    .centerYIs(viewY*0.613)
-    .widthIs(viewX*0.43)
-    .heightIs(viewY *0.081);
+        .centerXEqualToView(self.view)
+        .centerYIs(viewY*0.613)
+        .widthIs(viewX*0.43)
+        .heightIs(viewY *0.081);
     [self.btlow addTarget:self action:@selector(setlow) forControlEvents:UIControlEventTouchUpInside];
     
 #pragma mark 加强模式开关
@@ -320,10 +340,10 @@
     [self.view addSubview: self.bton];
     [ self.bton setBackgroundImage:[UIImage imageNamed:@"APP-Surface4_37"] forState:UIControlStateNormal];
     self.bton.sd_layout
-    .centerXEqualToView(self.view)
-    .centerYIs(viewY*0.387)
-    .widthIs(viewX*0.43)
-    .heightIs(viewY *0.081);
+        .centerXEqualToView(self.view)
+        .centerYIs(viewY*0.387)
+        .widthIs(viewX*0.43)
+        .heightIs(viewY *0.081);
     [self.bton addTarget:self action:@selector(setOn) forControlEvents:UIControlEventTouchUpInside];
     
     //加强模式关
@@ -331,10 +351,10 @@
     [self.view addSubview: self.btoff];
     [ self.btoff setBackgroundImage:[UIImage imageNamed:@"APP-Surface4_47"] forState:UIControlStateNormal];
     self.btoff.sd_layout
-    .centerXEqualToView(self.view)
-    .centerYIs(viewY*0.5)
-    .widthIs(viewX*0.43)
-    .heightIs(viewY *0.081);
+        .centerXEqualToView(self.view)
+        .centerYIs(viewY*0.5)
+        .widthIs(viewX*0.43)
+        .heightIs(viewY *0.081);
     [self.btoff addTarget:self action:@selector(setOff) forControlEvents:UIControlEventTouchUpInside];
     
 #pragma mark 底部图标
@@ -343,10 +363,10 @@
     [self.view addSubview: self.btpower];
     [ self.btpower setBackgroundImage:[UIImage imageNamed:@"APP-Surface3_11"] forState:UIControlStateNormal];
     self.btpower.sd_layout
-    .centerXIs(viewX*0.166)
-    .centerYIs(viewY*0.84)
-    .widthIs(viewX*0.206)
-    .heightEqualToWidth();
+        .centerXIs(viewX*0.166)
+        .centerYIs(viewY*0.84)
+        .widthIs(viewX*0.206)
+        .heightEqualToWidth();
     [self.btpower addTarget:self action:@selector(setpower) forControlEvents:UIControlEventTouchUpInside];
     
     //2.设置温度
@@ -354,36 +374,36 @@
     [self.view addSubview: self.bttemp];
     [ self.bttemp setBackgroundImage:[UIImage imageNamed:@"APP-Surface3_13"] forState:UIControlStateNormal];
     self.bttemp.sd_layout
-    .centerXIs(viewX*0.39)
-    .centerYIs(viewY*0.84)
-    .widthIs(viewX*0.206)
-    .heightEqualToWidth();
+        .centerXIs(viewX*0.39)
+        .centerYIs(viewY*0.84)
+        .widthIs(viewX*0.206)
+        .heightEqualToWidth();
     [self.bttemp addTarget:self action:@selector(settemp) forControlEvents:UIControlEventTouchUpInside];
-
-   
+    
+    
     //3.设置电池
     self.btbattery = [UIButton new];
     [self.view addSubview: self.btbattery];
     [ self.btbattery setBackgroundImage:[UIImage imageNamed:@"APP-Surface3_15"] forState:UIControlStateNormal];
     self.btbattery.sd_layout
-    .centerXIs(viewX*0.615)
-    .centerYIs(viewY*0.84)
-    .widthIs(viewX*0.206)
-    .heightEqualToWidth();
+        .centerXIs(viewX*0.615)
+        .centerYIs(viewY*0.84)
+        .widthIs(viewX*0.206)
+        .heightEqualToWidth();
     [self.btbattery addTarget:self action:@selector(setbattery) forControlEvents:UIControlEventTouchUpInside];
-
-   
+    
+    
     //4.设置模式
     self.btturbo = [UIButton new];
     [self.view addSubview: self.btturbo];
     [ self.btturbo setBackgroundImage:[UIImage imageNamed:@"APP-Surface3_17"] forState:UIControlStateNormal];
     self.btturbo.sd_layout
-    .centerXIs(viewX*0.838)
-    .centerYIs(viewY*0.84)
-    .widthIs(viewX*0.206)
-    .heightEqualToWidth();
+        .centerXIs(viewX*0.838)
+        .centerYIs(viewY*0.84)
+        .widthIs(viewX*0.206)
+        .heightEqualToWidth();
     [self.btturbo addTarget:self action:@selector(setturbo) forControlEvents:UIControlEventTouchUpInside];
-
+    
     
 #pragma mark 底部图标文字
     //底部文字1
@@ -396,10 +416,10 @@
     [label11 setText:@"ON\nOFF"];
     [label11 setAdjustsFontSizeToFitWidth:YES];
     label11.sd_layout
-    .centerXIs(viewX*0.166)
-    .centerYIs(viewY*0.92)
-    .widthIs(viewX*0.154)
-    .heightIs(viewY*0.035);
+        .centerXIs(viewX*0.166)
+        .centerYIs(viewY*0.92)
+        .widthIs(viewX*0.154)
+        .heightIs(viewY*0.035);
     
     //底部文字2
     UILabel * label12 = [UILabel new];
@@ -411,10 +431,10 @@
     [label12 setText:@"Temperature\nSetting"];
     [label12 setAdjustsFontSizeToFitWidth:YES];
     label12.sd_layout
-    .centerXIs(viewX*0.39)
-    .centerYIs(viewY*0.92)
-    .widthIs(viewX*0.206)
-    .heightIs(viewY*0.035);
+        .centerXIs(viewX*0.39)
+        .centerYIs(viewY*0.92)
+        .widthIs(viewX*0.206)
+        .heightIs(viewY*0.035);
     
     //底部文字3
     UILabel * label13 = [UILabel new];
@@ -426,10 +446,10 @@
     [label13 setText:@"Battery\nProtection"];
     [label13 setAdjustsFontSizeToFitWidth:YES];
     label13.sd_layout
-    .centerXIs(viewX*0.615)
-    .centerYIs(viewY*0.92)
-    .widthIs(viewX*0.162)
-    .heightIs(viewY*0.035);
+        .centerXIs(viewX*0.615)
+        .centerYIs(viewY*0.92)
+        .widthIs(viewX*0.162)
+        .heightIs(viewY*0.035);
     
     //底部文字4
     UILabel * label14 = [UILabel new];
@@ -441,10 +461,10 @@
     [label14 setText:@"Turbo\nMode"];
     [label14 setAdjustsFontSizeToFitWidth:YES];
     label14.sd_layout
-    .centerXIs(viewX*0.838)
-    .centerYIs(viewY*0.92)
-    .widthIs(viewX*0.092)
-    .heightIs(viewY*0.035);
+        .centerXIs(viewX*0.838)
+        .centerYIs(viewY*0.92)
+        .widthIs(viewX*0.092)
+        .heightIs(viewY*0.035);
 }
 
 
@@ -468,7 +488,7 @@
     
     //设置断开设备的委托
     [baby setBlockOnDisconnect:^(CBCentralManager *central, CBPeripheral *peripheral, NSError *error) {
-       
+        
         weakSelf.hud = [[MBProgressHUD alloc] initWithView:weakSelf.view];
         [weakSelf.view addSubview:weakSelf.hud];
         weakSelf.hud.mode = MBProgressHUDModeText;
@@ -695,6 +715,25 @@
     [self presentViewController:settingViewController animated:YES completion:nil];
 }
 
+//获取状态
+-(void) getStatus{
+    if(self.characteristic != nil){
+        Byte  write[8];
+        write[0] = 0xAA;
+        write[1] = 0x01;
+        write[2] = 0x00;
+        write[3] = (Byte)self.bytePass1;
+        write[4] = (Byte)self.bytePass2*16+self.bytePass3;
+        write[6] = 0xFF & CalcCRC(&write[1], 4);
+        write[5] = 0xFF & (CalcCRC(&write[1], 4)>>8);
+        write[7] = 0x55;
+        
+        NSData *data = [[NSData alloc]initWithBytes:write length:8];
+        [self.currPeripheral writeValue:data forCharacteristic:self.characteristic type:CBCharacteristicWriteWithResponse];
+        [self.currPeripheral setNotifyValue:YES forCharacteristic:self.characteristic];
+    }
+}
+
 //升温
 -(void) add{
     if(self.characteristic != nil){
@@ -719,7 +758,7 @@
 -(void)drop{
     if(self.characteristic != nil){
         int setting = self.dataRead.tempcool;
-    
+        
         
         Byte  write[8];
         write[0] = 0xAA;
@@ -861,20 +900,35 @@
     }
     
     //实时温度
-    if(self.dataRead.tempReal>128){
-        self.lbcurrent.text = [[NSString alloc] initWithFormat:@"%+d°C",self.dataRead.tempReal-256];
+    if(self.dataRead.unit == 1){
+        if(self.dataRead.tempReal>128){
+            self.lbcurrent.text = [[NSString alloc] initWithFormat:@"%+d°C",self.dataRead.tempReal-256];
+        }else{
+            self.lbcurrent.text = [[NSString alloc] initWithFormat:@"%+d°C",self.dataRead.tempReal];
+        }
     }else{
-        self.lbcurrent.text = [[NSString alloc] initWithFormat:@"%+d°C",self.dataRead.tempReal];
+        if(self.dataRead.tempReal>128){
+            self.lbcurrent.text = [[NSString alloc] initWithFormat:@"%+d°F",(int) (32 + 1.8 * (self.dataRead.tempReal-256))];
+        }else{
+            self.lbcurrent.text = [[NSString alloc] initWithFormat:@"%+d°F",(int) (32 + 1.8 *self.dataRead.tempReal)];
+        }
     }
     
     //设置温度
-    if(self.dataRead.tempcool > 128){
-        self.lbsetting.text =[[NSString alloc] initWithFormat:@"%+d°C",self.dataRead.tempcool-256];
+    if(self.dataRead.unit == 1){
+        if(self.dataRead.tempcool > 128){
+            self.lbsetting.text =[[NSString alloc] initWithFormat:@"%+d°C",self.dataRead.tempcool-256];
+        }else{
+            self.lbsetting.text =[[NSString alloc] initWithFormat:@"%+d°C",self.dataRead.tempcool];
+        }
     }else{
-       self.lbsetting.text =[[NSString alloc] initWithFormat:@"%+d°C",self.dataRead.tempcool];
+        if(self.dataRead.tempcool>128){
+            self.lbsetting.text = [[NSString alloc] initWithFormat:@"%+d°F",(int)(32 + 1.8 *(self.dataRead.tempcool-256))];
+        }else{
+            self.lbsetting.text = [[NSString alloc] initWithFormat:@"%+d°F",(int)(32 + 1.8 *self.dataRead.tempcool)];
+        }
     }
-    
-    
+
 }
 
 @end

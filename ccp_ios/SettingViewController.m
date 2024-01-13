@@ -36,6 +36,7 @@
     self.tableview.dataSource = self;
     self.celltitles = [[NSArray alloc] initWithObjects:@"Bluetooth",@"Temperature Alarm",@"Temperature Unit",@"Version", nil];
     self.detailtitles = [[NSArray alloc] initWithObjects:@"Connectd >",@"None >",@"°C >",@"1.2.3.45", nil];
+  
     self.label1 = [UILabel new];
     self.label2 = [UILabel new];
     [self setAutoLayout];
@@ -46,7 +47,9 @@
 -(void)viewDidAppear:(BOOL)animated{
     [self.tableview reloadData];
     [self babyDelegate];
-    baby.scanForPeripherals().begin();
+   // baby.scanForPeripherals().begin();
+    [self getStoredPass];
+    [self getStatus];
 }
 
 -(void)setAutoLayout{
@@ -85,6 +88,7 @@
         .topSpaceToView(self.view, 0.054*viewY)
         .widthIs(0.039*viewX)
         .heightIs(0.031*viewY);
+    [btReturn addTarget:self action:@selector(goBack) forControlEvents:UIControlEventTouchUpInside];
     
     //蓝牙标志
     //47 86 ，77，136
@@ -213,12 +217,73 @@
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-   
+    if(indexPath.row ==2){
+        if(self.characteristic != nil){
+            Byte  write[8];
+            write[0] = 0xAA;
+            write[1] = 0x08;
+            write[2] = self.dataRead.unit;
+            write[3] = (Byte)self.bytePass1;
+            write[4] = (Byte)self.bytePass2 *16+self.bytePass3;
+            write[6] = 0xFF & CalcCRC(&write[1], 4);
+            write[5] = 0xFF & (CalcCRC(&write[1], 4)>>8);
+            write[7] = 0x55;
+            
+            //设置华氏 00 08 01
+            NSData *data = [[NSData alloc]initWithBytes:write length:8];
+            [self.currPeripheral writeValue:data forCharacteristic:self.characteristic type:CBCharacteristicWriteWithResponse];
+            [self.currPeripheral setNotifyValue:YES forCharacteristic:self.characteristic];
+        }
+    }
+}
+
+//返回扫描页
+-(void)goBack{
+    [self dismissViewControllerAnimated:YES completion:^{
+        nil;
+    }];
+}
+
+-(void)getStoredPass{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    //self.strpass = [NSString stringWithFormat:@"%@%@%@",self.tfPass1.text,self.tfPass2.text,self.tfPass3.text];
+    NSString *strPass = [defaults objectForKey:self.currPeripheral.identifier.UUIDString];
+    if(self.currPeripheral){
+        self.bytePass1 = (int)strtoul([[strPass substringWithRange:NSMakeRange(0, 1)] UTF8String],0,16);
+        self.bytePass2 = (int)strtoul([[strPass substringWithRange:NSMakeRange(1, 1)] UTF8String],0,16);
+        self.bytePass3 = (int)strtoul([[strPass substringWithRange:NSMakeRange(2, 1)] UTF8String],0,16);
+    }
+}
+
+//获取状态
+-(void) getStatus{
+    if(self.characteristic != nil){
+        Byte  write[8];
+        write[0] = 0xAA;
+        write[1] = 0x01;
+        write[2] = 0x00;
+        write[3] = (Byte)self.bytePass1;
+        write[4] = (Byte)self.bytePass2*16+self.bytePass3;
+        write[6] = 0xFF & CalcCRC(&write[1], 4);
+        write[5] = 0xFF & (CalcCRC(&write[1], 4)>>8);
+        write[7] = 0x55;
+        
+        NSData *data = [[NSData alloc]initWithBytes:write length:8];
+        [self.currPeripheral writeValue:data forCharacteristic:self.characteristic type:CBCharacteristicWriteWithResponse];
+        [self.currPeripheral setNotifyValue:YES forCharacteristic:self.characteristic];
+    }
 }
 
 //更新状态
 -(void)updateStatus{
     //有返回非零数字，密码正确。保存密码
+    if(self.dataRead.unit == 0x00){
+        self.detailtitles = [[NSArray alloc] initWithObjects:@"Connectd >",@"None >",@"°F >",@"1.2.3.45", nil];
+    }else{
+        self.detailtitles = [[NSArray alloc] initWithObjects:@"Connectd >",@"None >",@"°C >",@"1.2.3.45", nil];
+    }
+    [self.tableview reloadData];
+    
 }
 
 @end
