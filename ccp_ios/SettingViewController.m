@@ -12,16 +12,16 @@
 #import "crc.h"
 
 @interface SettingViewController()<UITableViewDelegate,UITableViewDataSource>
-@property (retain, nonatomic)  MBProgressHUD *hud;
-@property (nonatomic,retain) NSMutableArray <CBPeripheral*> *devices;;
-@property (nonatomic,strong) NSString *brand;
-@property (nonatomic,strong) UIView *viewMusk;
 @property (nonatomic,strong) UITableView *tableview;
-@property (nonatomic,strong)  UIButton *btclose;
+@property (nonatomic,retain) NSArray *celltitles;
+@property (nonatomic,retain) NSArray *detailtitles;
 @property(nonatomic,strong) NSString *strpass;
 @property Byte bytePass1;
 @property Byte bytePass2;
 @property Byte bytePass3;
+
+@property UILabel *label1;
+@property UILabel *label2;
 
 @end
 
@@ -30,15 +30,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.hud = [[MBProgressHUD alloc]init];
-    
     self.dataRead = [[DataRead alloc] init];
     self.tableview = [[UITableView alloc]init];
     self.tableview.delegate = self;
     self.tableview.dataSource = self;
-    self.devices = [[NSMutableArray alloc]init];
+    self.celltitles = [[NSArray alloc] initWithObjects:@"Bluetooth",@"Temperature Alarm",@"Temperature Unit",@"Version", nil];
+    self.detailtitles = [[NSArray alloc] initWithObjects:@"Connectd >",@"None >",@"°C >",@"1.2.3.45", nil];
+    self.label1 = [UILabel new];
+    self.label2 = [UILabel new];
     [self setAutoLayout];
-    [self creatview];
     baby = [BabyBluetooth shareBabyBluetooth];
     [self babyDelegate];
 }
@@ -96,36 +96,14 @@
         .topSpaceToView(self.view, 0.055*viewY)
         .heightRatioToView(btReturn, 1.0)
         .widthIs(0.072*viewX);
-}
-
-#pragma  - mark 弹窗
--(void)creatview{
-    CGRect parentFrame = self.view.frame;
-    CGRect muskFrame = CGRectMake(parentFrame.origin.x, parentFrame.origin.y, parentFrame.size.width, parentFrame.size.height);
-    self.viewMusk = [[UIView alloc] initWithFrame:muskFrame];
-    [self.viewMusk setBackgroundColor:[UIColor colorWithRed:1/255.0 green:1/255.0 blue:1/255.0 alpha:0.5]];
-    [self.view addSubview:self.viewMusk];
     
-    [self.viewMusk addSubview:self.tableview];
-    [self.tableview setBackgroundColor:[UIColor colorWithRed:212.0/255 green:211.0/255 blue:207.0/255 alpha:1.0]];
+    [self.view addSubview:self.tableview];
+    [self.tableview setBackgroundColor:[UIColor colorWithRed:142/255.0 green:150/255.0 blue:143/255.0 alpha:1]];
     self.tableview.sd_layout
-        .centerXEqualToView(self.viewMusk)
-        .widthRatioToView(self.viewMusk, 0.9)
-        .centerYEqualToView(self.viewMusk)
-        .heightRatioToView(self.viewMusk, 0.5);
-    self.tableview.layer.cornerRadius = 10.0f;
-    self.tableview.layer.masksToBounds = YES;
-    
-    self.btclose = [UIButton new];
-    [self.btclose setImage:[UIImage imageNamed:@"no"] forState:UIControlStateNormal];
-    [self.viewMusk addSubview:self.btclose];
-    self.btclose.sd_layout
-        .rightEqualToView(self.tableview)
-        .bottomSpaceToView(self.tableview, 0)
-        .widthIs(self.view.size.width/10.0)
-        .heightEqualToWidth();
-    [self.btclose addTarget:self action:@selector(closeTableView) forControlEvents:UIControlEventTouchUpInside];
-    [self.viewMusk setHidden:YES];
+    .centerXEqualToView(self.view)
+    .topSpaceToView(self.view, 0.15 *viewY)
+    .widthRatioToView(self.view, 1.0)
+    .heightIs(self.view.height*0.38);
 }
 
 
@@ -136,110 +114,33 @@
     //设置扫描到设备的委托
     [baby setBlockOnDiscoverToPeripherals:^(CBCentralManager *central, CBPeripheral *peripheral, NSDictionary *advertisementData, NSNumber *RSSI) {
         NSLog(@"Device discovered :%@",peripheral.name);
-        
-        if([peripheral.name hasPrefix:@"CCP15R"] ||[peripheral.name hasPrefix:@"CCP20R"]){
-            [weakSelf.devices addObject:peripheral];
-            [weakSelf.tableview reloadData];
-            //  [baby.centralManager connectPeripheral:peripheral options:nil];
-        }
-        if([weakSelf.devices count]>5){
-            [central stopScan];
-        }
     }];
-    
+
     //设置连接设备失败的委托
     [baby setBlockOnFailToConnect:^(CBCentralManager *central, CBPeripheral *peripheral, NSError *error) {
-        weakSelf.hud.label.text = @"Device connected failed!\nPlease check the bluetooth!";
-        [weakSelf.hud setMinShowTime:1];
-        [weakSelf.hud showAnimated:YES];
-        [weakSelf.hud hideAnimated:YES];
+//        weakSelf.hud.label.text = @"Device connected failed!\nPlease check the bluetooth!";
+//        [weakSelf.hud setMinShowTime:1];
+//        [weakSelf.hud showAnimated:YES];
+//        [weakSelf.hud hideAnimated:YES];
     }];
     
     //设置断开设备的委托
     [baby setBlockOnDisconnect:^(CBCentralManager *central, CBPeripheral *peripheral, NSError *error) {
-        weakSelf.hud.mode = MBProgressHUDModeIndeterminate;
-        weakSelf.hud.label.text = @"Disconnet devices";
-        [weakSelf.hud setMinShowTime:1];
-        [weakSelf.hud showAnimated:YES];
+//        weakSelf.hud.mode = MBProgressHUDModeIndeterminate;
+//        weakSelf.hud.label.text = @"Disconnet devices";
+//        [weakSelf.hud setMinShowTime:1];
+//        [weakSelf.hud showAnimated:YES];
     }];
-    
-    //设置设备连接成功的委托
-    [baby setBlockOnConnected:^(CBCentralManager *central, CBPeripheral *peripheral) {
-        [central stopScan];
-        NSLog(@"设备：%@--连接成功",peripheral.name);
-        weakSelf.currPeripheral = peripheral;
-        [peripheral discoverServices:nil];
-    }];
-    
-    //设置发现设备的Services的委托
-    [baby setBlockOnDiscoverServices:^(CBPeripheral *peripheral, NSError *error) {
-        for (CBService *service in peripheral.services) {
-            NSLog(@"搜索到服务:%@",service.UUID.UUIDString);
-            for(CBService *service in peripheral.services){
-                [peripheral discoverCharacteristics:nil forService:service];
-            }
-        }
-    }];
-    
-    //设置发现设service的Characteristics的委托
-    [baby setBlockOnDiscoverCharacteristics:^(CBPeripheral *peripheral, CBService *service, NSError *error) {
-        // NSLog(@"===service name:%@",service.UUID);
-        for (CBCharacteristic *c in service.characteristics) {
-            //NSLog(@"charateristic name is :%@",c.UUID);
-            if([c.UUID.UUIDString isEqualToString:@"FEE1"]){
-                weakSelf.currPeripheral = peripheral;
-                weakSelf.characteristic = c;
-                
-                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                weakSelf.strpass = [defaults  objectForKey:peripheral.identifier.UUIDString];
-                
-                if(weakSelf.strpass != nil){
-                    weakSelf.bytePass1 = (int)strtoul([[weakSelf.strpass substringWithRange:NSMakeRange(0, 1)] UTF8String],0,16);
-                    weakSelf.bytePass2 = (int)strtoul([[weakSelf.strpass substringWithRange:NSMakeRange(1, 1)] UTF8String],0,16);
-                    weakSelf.bytePass3 = (int)strtoul([[weakSelf.strpass substringWithRange:NSMakeRange(2, 1)] UTF8String],0,16);
-                    [weakSelf.viewMusk setHidden:YES];
-                    
-                    if(self.characteristic != nil){
-                        Byte  write[8];
-                        write[0] = 0xAA;
-                        write[1] = 0x01;
-                        write[2] = 0x00;
-                        write[3] = (Byte)weakSelf.bytePass1;
-                        write[4] = (Byte)weakSelf.bytePass2*16+weakSelf.bytePass3;
-                        write[6] = 0xFF & CalcCRC(&write[1], 4);
-                        write[5] = 0xFF & (CalcCRC(&write[1], 4)>>8);
-                        write[7] = 0x55;
-                        
-                        //首次连接 write = AA 09 01 00 00 78 52 55
-                        
-                        NSData *data = [[NSData alloc]initWithBytes:write length:8];
-                        [weakSelf.currPeripheral writeValue:data forCharacteristic:weakSelf.characteristic type:CBCharacteristicWriteWithResponse];
-                        [weakSelf.currPeripheral setNotifyValue:YES forCharacteristic:weakSelf.characteristic];
-                    }
-                }
-                [peripheral readValueForCharacteristic:c];
-            }
-        }
-    }];
-    
+
     //设置读取characteristics的委托
     [baby setBlockOnReadValueForCharacteristic:^(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error) {
         //   NSLog(@"read characteristic successfully!");
         
-        [weakSelf.hud hideAnimated:YES];
-        [weakSelf.hud removeFromSuperview];
-        
+     
         if([characteristics.UUID.UUIDString isEqualToString:@"FEE1"]){
-            
-            weakSelf.characteristic = characteristics;
-            weakSelf.currPeripheral = peripheral;
-            
+       
             NSData *data = characteristics.value;
             Byte r[22] = {0};
-            
-            if(data.length == 0){
-                [weakSelf getPassWord];
-            }
             
             if(data.length == 22){
                 memcpy(r, [data bytes], 22);
@@ -266,7 +167,6 @@
                 weakSelf.dataRead.crcH = r[19];   //CRC校验高八位
                 weakSelf.dataRead.crcL = r[20];   //CRC校验低八位
                 weakSelf.dataRead.end = r[21];  //通信结束
-
                 [weakSelf updateStatus];
             }
         }
@@ -289,16 +189,9 @@
     }];
 }
 
-//按下蓝牙按钮
--(void)bleTouched{
-    [self.viewMusk setHidden:NO];
-    [self.tableview setHidden:NO];
-    [self.btclose setHidden:NO];
-}
-
 #pragma mark tableviewdatasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return [self.devices count];
+    return 4;
 }
 
 
@@ -308,78 +201,24 @@
     if(!cell){
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellID];
     }
-    [cell setBackgroundColor:[UIColor whiteColor]];
+    [cell setBackgroundColor:[UIColor colorWithRed:142/255.0 green:150/255.0 blue:143/255.0 alpha:1]];
+    [cell.textLabel setTextColor:[UIColor colorWithRed:105/255.0 green:79.0/255 blue:83/255.0 alpha:1]];
+    [cell.textLabel setText:[self.celltitles objectAtIndex:indexPath.row]];
     
-    CBPeripheral *peripheral = [self.devices objectAtIndex:indexPath.row];
-    // NSString *advertiseName = [self.localNames objectAtIndex:indexPath.row];
-    [cell.textLabel setText:peripheral.name];
-    [cell.textLabel setTextColor:[UIColor blackColor]];
+    [cell.detailTextLabel setTextColor:[UIColor whiteColor]];
+    [cell.detailTextLabel setText:[self.detailtitles objectAtIndex:indexPath.row]];
     
     return cell;
 }
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [self.tableview setHidden:YES];
-    [self.btclose setHidden:YES];
-    
-    [baby.centralManager stopScan];
-    [baby cancelAllPeripheralsConnection];
-    [baby.centralManager connectPeripheral:[self.devices objectAtIndex:indexPath.row] options:nil];
-    
-    
-    self.hud = [MBProgressHUD showHUDAddedTo:self.viewMusk animated:YES];
-    self.hud.mode = MBProgressHUDModeIndeterminate;
-    self.hud.label.text = @"connect to device.....";
-    [self.hud showAnimated:YES];
-    
+   
 }
-
-
-//关闭密码框
--(void)closeTableView{
-    [self.tableview setHidden:YES];
-    [self.btclose setHidden:YES];
-    [self.viewMusk setHidden:YES];
-}
-
-
-//获取密码
--(void)getPassWord{
-    //大板 A46
-    
-    if(self.characteristic != nil){
-        Byte  write[8];
-        write[0] = 0xAA;
-        write[1] = 0x09;
-        write[2] = 0x01;
-        write[3] = 0x00;
-        write[4] = 0x00;
-        write[6] = 0xFF & CalcCRC(&write[1], 4);
-        write[5] = 0xFF & (CalcCRC(&write[1], 4)>>8);
-        write[7] = 0x55;
-        
-        //首次连接 write = AA 09 01 00 00 78 52 55
-        
-        NSData *data = [[NSData alloc]initWithBytes:write length:8];
-        [self.currPeripheral writeValue:data forCharacteristic:self.characteristic type:CBCharacteristicWriteWithResponse];
-        [self.currPeripheral setNotifyValue:YES forCharacteristic:self.characteristic];
-        // [self updateStatus];
-    }
-}
-
 
 //更新状态
 -(void)updateStatus{
     //有返回非零数字，密码正确。保存密码
-    if( self.dataRead.gc!= 0 ){
-        [self.viewMusk setHidden:YES];
-        //  [baby.centralManager  stopScan];
-        [self.hud setHidden:YES];
-        [self.hud removeFromSuperview];
-        [self.viewMusk removeFromSuperview];
-        
-    }
 }
 
 @end

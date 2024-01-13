@@ -216,7 +216,7 @@
             [weakSelf.tableview reloadData];
             //  [baby.centralManager connectPeripheral:peripheral options:nil];
         }
-        if([weakSelf.devices count]>5){
+        if([weakSelf.devices count]>=5){
             [central stopScan];
         }
     }];
@@ -243,6 +243,7 @@
         NSLog(@"设备：%@--连接成功",peripheral.name);
         weakSelf.currPeripheral = peripheral;
         [peripheral discoverServices:nil];
+        [central stopScan];
     }];
     
     //设置发现设备的Services的委托
