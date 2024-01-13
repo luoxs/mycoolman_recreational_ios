@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic,retain) DataRead *dataRead;
 
+
 @end
 
 NS_ASSUME_NONNULL_END

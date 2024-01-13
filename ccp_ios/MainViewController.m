@@ -81,9 +81,11 @@
     [self babyDelegate];
 //    self.timer = [NSTimer timerWithTimeInterval:1 repeats:YES block:^(NSTimer * _Nonnull timer) {
 //        [self getStatus];
-//    }];
-    self.timer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(getStatus) userInfo:nil repeats:YES];
-    [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
+//
+    if(self.currPeripheral.state == CBPeripheralStateConnected){
+        self.timer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(getStatus) userInfo:nil repeats:YES];
+        [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
+    }
    // [self getStatus];
 }
 
@@ -133,6 +135,7 @@
         .topSpaceToView(self.view, 0.054*viewY)
         .widthIs(0.039*viewX)
         .heightIs(0.031*viewY);
+    [btReturn addTarget:self action:@selector(goBack) forControlEvents:UIControlEventTouchUpInside];
     
     
     //蓝牙标志
@@ -486,6 +489,12 @@
         //        [weakSelf.hud hideAnimated:YES];
     }];
     
+    //设置取消
+    [baby setBlockOnCancelAllPeripheralsConnectionBlock:^(CBCentralManager *centralManager){
+        [weakSelf.timer invalidate];
+        weakSelf.timer = nil;
+    }];
+    
     //设置断开设备的委托
     [baby setBlockOnDisconnect:^(CBCentralManager *central, CBPeripheral *peripheral, NSError *error) {
         
@@ -599,6 +608,14 @@
         self.bytePass3 = (int)strtoul([[strPass substringWithRange:NSMakeRange(2, 1)] UTF8String],0,16);
     }
 }
+
+//返回
+-(void)goBack{
+    
+   [baby cancelAllPeripheralsConnection];
+   [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 
 -(void) setpower{
     [self.lbmode setHidden:YES];

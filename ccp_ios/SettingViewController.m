@@ -6,6 +6,7 @@
 //
 
 #import "SettingViewController.h"
+#import "MainViewController.h"
 #import "BabyBluetooth.h"
 #import "SDAutoLayout.h"
 #import "MBProgressHUD.h"
@@ -217,6 +218,14 @@
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    //断开连接
+    if(indexPath.row ==0){
+       // MainViewController *mainViewController = (MainViewController *)[self presentingViewController];
+        [baby cancelAllPeripheralsConnection];
+       [self.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+
+    }
+    //切换单位
     if(indexPath.row ==2){
         if(self.characteristic != nil){
             Byte  write[8];

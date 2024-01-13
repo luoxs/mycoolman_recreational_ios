@@ -212,8 +212,11 @@
         NSLog(@"Device discovered :%@",peripheral.name);
         
         if([peripheral.name hasPrefix:@"CCP15R"] ||[peripheral.name hasPrefix:@"CCP20R"]){
-            [weakSelf.devices addObject:peripheral];
-            [weakSelf.tableview reloadData];
+            if(![weakSelf.devices containsObject:peripheral]){
+            
+                [weakSelf.devices addObject:peripheral];
+                [weakSelf.tableview reloadData];
+            }
             //  [baby.centralManager connectPeripheral:peripheral options:nil];
         }
         if([weakSelf.devices count]>=5){
@@ -544,7 +547,7 @@
         //  [baby.centralManager  stopScan];
         [self.hud setHidden:YES];
         [self.hud removeFromSuperview];
-        [self.viewMusk removeFromSuperview];
+        //[self.viewMusk removeFromSuperview];
         
         MainViewController *mainViewController = [[MainViewController alloc]init];
         [mainViewController setModalPresentationStyle:UIModalPresentationFullScreen];
