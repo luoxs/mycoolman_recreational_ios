@@ -81,19 +81,37 @@
     .heightRatioToView(self.view, 0.1);
     
     //商标
-    UILabel *lblogo = [UILabel new];
-    [self.view addSubview:lblogo];
-    [lblogo setTextColor:[UIColor whiteColor]];
-    [lblogo setFont:[UIFont fontWithName:@"Arial" size:24]];
-    [lblogo setTextAlignment:NSTextAlignmentCenter];
-    [lblogo sizeToFit];
-    [lblogo setText:@"MY COOLMAN"];
-    lblogo.sd_layout
+    UIImageView *imglogo = [UIImageView new];
+    [self.view addSubview:imglogo];
+    [imglogo setImage:[UIImage imageNamed:@"MYCOOLMAN"]];
+    imglogo.sd_layout
     .centerXEqualToView(self.view)
-    .topSpaceToView(self.view, viewY*0.06)
-    .widthIs(viewX*0.618)
-    .heightRatioToView(self.view, 0.04);
-    [lblogo setAdjustsFontSizeToFitWidth:YES];
+    .centerYIs(viewY * 0.07)
+    .widthIs(viewX*0.443)
+    .heightRatioToView(self.view, 0.031);
+    
+    //返回
+    //47 86 ，77，136
+    UIButton *btReturn =[UIButton new];
+    [self.view addSubview:btReturn];
+    [btReturn setImage:[UIImage imageNamed:@"APP-Surface16_05"] forState:UIControlStateNormal];
+    btReturn.sd_layout
+    .leftSpaceToView(self.view, 0.062*viewX)
+    .topSpaceToView(self.view, 0.054*viewY)
+    .widthIs(0.039*viewX)
+    .heightIs(0.031*viewY);
+    
+    //设置
+    //673 88 ，721，698
+    UIButton *btSetting =[UIButton new];
+    [self.view addSubview:btSetting];
+    [btSetting setImage:[UIImage imageNamed:@"setting"] forState:UIControlStateNormal];
+    btSetting.sd_layout
+    .leftSpaceToView(self.view, 0.876*viewX)
+    .topSpaceToView(self.view, 0.055*viewY)
+    .widthIs(0.062*viewX)
+    .heightEqualToWidth();
+    
     
     //文字 recreational seris
     UIImageView *imgRCeational = [UIImageView new];
