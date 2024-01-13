@@ -12,6 +12,7 @@
 #import "crc.h"
 #import "MainViewController.h"
 #import <AVFoundation/AVFoundation.h>
+#import "PassViewController.h"
 
 @interface ViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,AVCaptureMetadataOutputObjectsDelegate>
 @property (retain, nonatomic)  MBProgressHUD *hud;
@@ -213,66 +214,66 @@
         .heightEqualToWidth();
     [self.btclose addTarget:self action:@selector(closeTableView) forControlEvents:UIControlEventTouchUpInside];
     
-    CGRect passFrame = CGRectMake(self.viewMusk.origin.x+30*rwidth, self.viewMusk.origin.y+202*rheight, 330*rwidth, 330*rheight);
-    //[self.viewPass setBackgroundColor:[UIColor colorWithRed:200.0/255.0 green:101.0/255.0 blue:69.0/255.0 alpha:1]];
-    self.viewPass = [[UIView alloc] initWithFrame:passFrame];
-   // [self.viewPass setBackgroundColor:[UIColor whiteColor]];
-    self.viewPass.layer.cornerRadius = 20.0;
-    [self.viewMusk addSubview: self.viewPass];
-    
-    //密码框
-    CGRect rectPass1 = CGRectMake(44*rwidth, 32*rheight, 67*rwidth, 81*rheight);
-    self.tfPass1 = [[UITextField alloc] initWithFrame:rectPass1];
-    [self.tfPass1 setTextColor:[UIColor blackColor]];
-    [self.tfPass1 setBackgroundColor:[UIColor grayColor]];
-    //self.tfPass1.layer.backgroundColor = [[UIColor clearColor] CGColor];
-    self.tfPass1.layer.borderColor = [[UIColor blackColor]CGColor];
-    [self.tfPass1 setBackgroundColor:[UIColor colorWithRed:230/255.0 green:230/255.0 blue:230/255.0 alpha:1]];
-    self.tfPass1.layer.borderWidth = 0.0;
-    self.tfPass1.layer.cornerRadius = 16.0;
-    [self.tfPass1.layer setMasksToBounds:YES];
-    [self.tfPass1 setTextAlignment:NSTextAlignmentCenter];
-    self.tfPass1.clearsOnBeginEditing = YES;
-    [ self.viewPass addSubview:self.tfPass1];
-    self.tfPass1.font = [UIFont fontWithName:@"Arial" size:25];
-    [self.tfPass1 addTarget:self action:@selector(textFiledDidChange:) forControlEvents:UIControlEventEditingChanged];
-    self.tfPass1.delegate = self;
-   // [self.tfPass1 addTarget:self action:@selector(touched:) forControlEvents:UIControlEventTouchUpInside];
-    
-    CGRect rectPass2 = CGRectMake(133*rwidth, 32*rheight, 67*rwidth, 81*rheight);
-    self.tfPass2 = [[UITextField alloc] initWithFrame:rectPass2];
-    [self.tfPass2 setTextColor:[UIColor blackColor]];
-    [self.tfPass2 setBackgroundColor:[UIColor grayColor]];
-    self.tfPass2.layer.backgroundColor = [[UIColor clearColor] CGColor];
-    self.tfPass2.layer.borderColor = [[UIColor blackColor]CGColor];
-    [self.tfPass2 setBackgroundColor:[UIColor colorWithRed:230/255.0 green:230/255.0 blue:230/255.0 alpha:1]];
-    self.tfPass2.layer.borderWidth = 0.0;
-    self.tfPass2.layer.cornerRadius = 16.0;
-    [self.tfPass2.layer setMasksToBounds:YES];
-    [self.tfPass2 setTextAlignment:NSTextAlignmentCenter];
-    //self.tfPass2.borderStyle = UITextBorderStyleRoundedRect;
-    self.tfPass2.clearsOnBeginEditing = YES;
-    [ self.viewPass addSubview:self.tfPass2];
-    self.tfPass2.font = [UIFont fontWithName:@"Arial" size:25];
-    [self.tfPass2 addTarget:self action:@selector(textFiledDidChange:) forControlEvents:UIControlEventEditingChanged];
-    self.tfPass2.delegate = self;
-    
-    CGRect rectPass3 = CGRectMake(221*rwidth, 32*rheight, 67*rwidth, 81*rheight);
-    self.tfPass3 = [[UITextField alloc] initWithFrame:rectPass3];
-    [self.tfPass3 setTextColor:[UIColor blackColor]];
-    [self.tfPass3 setBackgroundColor:[UIColor grayColor]];
-    self.tfPass3.layer.backgroundColor = [[UIColor clearColor] CGColor];
-    //self.tfPass3.layer.borderColor = [[UIColor blackColor]CGColor];
-    [self.tfPass3 setBackgroundColor:[UIColor colorWithRed:230/255.0 green:230/255.0 blue:230/255.0 alpha:1]];
-    self.tfPass3.layer.borderWidth = 0.0;
-    self.tfPass3.layer.cornerRadius = 16.0;
-    [self.tfPass3.layer setMasksToBounds:YES];
-    [self.tfPass3 setTextAlignment:NSTextAlignmentCenter];
-    self.tfPass3.clearsOnBeginEditing = YES;
-    [ self.viewPass addSubview:self.tfPass3];
-    self.tfPass3.font = [UIFont fontWithName:@"Arial" size:25];
-    [self.tfPass3 addTarget:self action:@selector(textFiledDidChange:) forControlEvents:UIControlEventEditingChanged];
-    self.tfPass3.delegate = self;
+//    CGRect passFrame = CGRectMake(self.viewMusk.origin.x+30*rwidth, self.viewMusk.origin.y+202*rheight, 330*rwidth, 330*rheight);
+//    //[self.viewPass setBackgroundColor:[UIColor colorWithRed:200.0/255.0 green:101.0/255.0 blue:69.0/255.0 alpha:1]];
+//    self.viewPass = [[UIView alloc] initWithFrame:passFrame];
+//   // [self.viewPass setBackgroundColor:[UIColor whiteColor]];
+//    self.viewPass.layer.cornerRadius = 20.0;
+//    [self.viewMusk addSubview: self.viewPass];
+//
+//    //密码框
+//    CGRect rectPass1 = CGRectMake(44*rwidth, 32*rheight, 67*rwidth, 81*rheight);
+//    self.tfPass1 = [[UITextField alloc] initWithFrame:rectPass1];
+//    [self.tfPass1 setTextColor:[UIColor blackColor]];
+//    [self.tfPass1 setBackgroundColor:[UIColor grayColor]];
+//    //self.tfPass1.layer.backgroundColor = [[UIColor clearColor] CGColor];
+//    self.tfPass1.layer.borderColor = [[UIColor blackColor]CGColor];
+//    [self.tfPass1 setBackgroundColor:[UIColor colorWithRed:230/255.0 green:230/255.0 blue:230/255.0 alpha:1]];
+//    self.tfPass1.layer.borderWidth = 0.0;
+//    self.tfPass1.layer.cornerRadius = 16.0;
+//    [self.tfPass1.layer setMasksToBounds:YES];
+//    [self.tfPass1 setTextAlignment:NSTextAlignmentCenter];
+//    self.tfPass1.clearsOnBeginEditing = YES;
+//    [ self.viewPass addSubview:self.tfPass1];
+//    self.tfPass1.font = [UIFont fontWithName:@"Arial" size:25];
+//    [self.tfPass1 addTarget:self action:@selector(textFiledDidChange:) forControlEvents:UIControlEventEditingChanged];
+//    self.tfPass1.delegate = self;
+//   // [self.tfPass1 addTarget:self action:@selector(touched:) forControlEvents:UIControlEventTouchUpInside];
+//
+//    CGRect rectPass2 = CGRectMake(133*rwidth, 32*rheight, 67*rwidth, 81*rheight);
+//    self.tfPass2 = [[UITextField alloc] initWithFrame:rectPass2];
+//    [self.tfPass2 setTextColor:[UIColor blackColor]];
+//    [self.tfPass2 setBackgroundColor:[UIColor grayColor]];
+//    self.tfPass2.layer.backgroundColor = [[UIColor clearColor] CGColor];
+//    self.tfPass2.layer.borderColor = [[UIColor blackColor]CGColor];
+//    [self.tfPass2 setBackgroundColor:[UIColor colorWithRed:230/255.0 green:230/255.0 blue:230/255.0 alpha:1]];
+//    self.tfPass2.layer.borderWidth = 0.0;
+//    self.tfPass2.layer.cornerRadius = 16.0;
+//    [self.tfPass2.layer setMasksToBounds:YES];
+//    [self.tfPass2 setTextAlignment:NSTextAlignmentCenter];
+//    //self.tfPass2.borderStyle = UITextBorderStyleRoundedRect;
+//    self.tfPass2.clearsOnBeginEditing = YES;
+//    [ self.viewPass addSubview:self.tfPass2];
+//    self.tfPass2.font = [UIFont fontWithName:@"Arial" size:25];
+//    [self.tfPass2 addTarget:self action:@selector(textFiledDidChange:) forControlEvents:UIControlEventEditingChanged];
+//    self.tfPass2.delegate = self;
+//
+//    CGRect rectPass3 = CGRectMake(221*rwidth, 32*rheight, 67*rwidth, 81*rheight);
+//    self.tfPass3 = [[UITextField alloc] initWithFrame:rectPass3];
+//    [self.tfPass3 setTextColor:[UIColor blackColor]];
+//    [self.tfPass3 setBackgroundColor:[UIColor grayColor]];
+//    self.tfPass3.layer.backgroundColor = [[UIColor clearColor] CGColor];
+//    //self.tfPass3.layer.borderColor = [[UIColor blackColor]CGColor];
+//    [self.tfPass3 setBackgroundColor:[UIColor colorWithRed:230/255.0 green:230/255.0 blue:230/255.0 alpha:1]];
+//    self.tfPass3.layer.borderWidth = 0.0;
+//    self.tfPass3.layer.cornerRadius = 16.0;
+//    [self.tfPass3.layer setMasksToBounds:YES];
+//    [self.tfPass3 setTextAlignment:NSTextAlignmentCenter];
+//    self.tfPass3.clearsOnBeginEditing = YES;
+//    [ self.viewPass addSubview:self.tfPass3];
+//    self.tfPass3.font = [UIFont fontWithName:@"Arial" size:25];
+//    [self.tfPass3 addTarget:self action:@selector(textFiledDidChange:) forControlEvents:UIControlEventEditingChanged];
+//    self.tfPass3.delegate = self;
 
     //关闭按钮
     CGRect rectClose = CGRectMake(179*rwidth, 678*rheight, 33*rwidth, 33*rheight);
@@ -469,8 +470,13 @@
                 weakSelf.dataRead.crcL = r[20];   //CRC校验低八位
                 weakSelf.dataRead.end = r[21];  //通信结束
                 if(self.dataRead.gc == 0x00){
-                    NSLog(@"输入密码");
-                    [weakSelf.viewPass setHidden:NO];
+                    NSLog(@"跳到密码输入界面");
+                   // [weakSelf.viewPass setHidden:NO];
+                    PassViewController  *passViewController = [PassViewController new];
+                    [passViewController setModalPresentationStyle:UIModalPresentationFullScreen];
+                    passViewController.currPeripheral = weakSelf.currPeripheral;
+                    passViewController.characteristic = weakSelf.characteristic;
+                    [weakSelf presentViewController:passViewController animated:YES completion:nil];
                 }else{
                     [weakSelf updateStatus];
                 }

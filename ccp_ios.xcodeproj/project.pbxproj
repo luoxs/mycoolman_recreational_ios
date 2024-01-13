@@ -56,7 +56,7 @@
 		452B117E2B4ADCE900F9ADB2 /* APP-Surface15_05.png in Resources */ = {isa = PBXBuildFile; fileRef = 452B115A2B4ADCE900F9ADB2 /* APP-Surface15_05.png */; };
 		452B117F2B4ADCE900F9ADB2 /* APP-Surface19_12.png in Resources */ = {isa = PBXBuildFile; fileRef = 452B115B2B4ADCE900F9ADB2 /* APP-Surface19_12.png */; };
 		452B11822B4AED5000F9ADB2 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 452B11812B4AED5000F9ADB2 /* MainViewController.m */; };
-		45A53D062B5231E700CD55DE /* passViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45A53D052B5231E700CD55DE /* passViewController.m */; };
+		45A53D062B5231E700CD55DE /* PassViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45A53D052B5231E700CD55DE /* PassViewController.m */; };
 		45A53D0A2B52330E00CD55DE /* ble.png in Resources */ = {isa = PBXBuildFile; fileRef = 45A53D072B52330E00CD55DE /* ble.png */; };
 		45A53D0B2B52330E00CD55DE /* setting.png in Resources */ = {isa = PBXBuildFile; fileRef = 45A53D082B52330E00CD55DE /* setting.png */; };
 		45A53D0C2B52330E00CD55DE /* MYCOOLMAN.png in Resources */ = {isa = PBXBuildFile; fileRef = 45A53D092B52330E00CD55DE /* MYCOOLMAN.png */; };
@@ -120,8 +120,8 @@
 		452B115B2B4ADCE900F9ADB2 /* APP-Surface19_12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "APP-Surface19_12.png"; sourceTree = "<group>"; };
 		452B11802B4AED5000F9ADB2 /* MainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		452B11812B4AED5000F9ADB2 /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
-		45A53D042B5231E700CD55DE /* passViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = passViewController.h; path = ccp_ios/passViewController.h; sourceTree = "<group>"; };
-		45A53D052B5231E700CD55DE /* passViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = passViewController.m; path = ccp_ios/passViewController.m; sourceTree = "<group>"; };
+		45A53D042B5231E700CD55DE /* PassViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PassViewController.h; path = ccp_ios/PassViewController.h; sourceTree = "<group>"; };
+		45A53D052B5231E700CD55DE /* PassViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = PassViewController.m; path = ccp_ios/PassViewController.m; sourceTree = "<group>"; };
 		45A53D072B52330E00CD55DE /* ble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ble.png; sourceTree = "<group>"; };
 		45A53D082B52330E00CD55DE /* setting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = setting.png; sourceTree = "<group>"; };
 		45A53D092B52330E00CD55DE /* MYCOOLMAN.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MYCOOLMAN.png; sourceTree = "<group>"; };
@@ -145,8 +145,8 @@
 		452B11022B4AD79000F9ADB2 = {
 			isa = PBXGroup;
 			children = (
-				45A53D042B5231E700CD55DE /* passViewController.h */,
-				45A53D052B5231E700CD55DE /* passViewController.m */,
+				45A53D042B5231E700CD55DE /* PassViewController.h */,
+				45A53D052B5231E700CD55DE /* PassViewController.m */,
 				452B110D2B4AD79100F9ADB2 /* ccp_ios */,
 				452B110C2B4AD79100F9ADB2 /* Products */,
 				DA951BCBFA6E58C5BA5F91E0 /* Pods */,
@@ -399,7 +399,7 @@
 			files = (
 				452B11162B4AD79100F9ADB2 /* ViewController.m in Sources */,
 				452B11322B4ADA3C00F9ADB2 /* DataRead.m in Sources */,
-				45A53D062B5231E700CD55DE /* passViewController.m in Sources */,
+				45A53D062B5231E700CD55DE /* PassViewController.m in Sources */,
 				452B11822B4AED5000F9ADB2 /* MainViewController.m in Sources */,
 				452B11362B4ADA3C00F9ADB2 /* crc.c in Sources */,
 				452B11102B4AD79100F9ADB2 /* AppDelegate.m in Sources */,
