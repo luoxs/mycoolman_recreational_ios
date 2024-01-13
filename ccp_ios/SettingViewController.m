@@ -222,8 +222,14 @@
     if(indexPath.row ==0){
        // MainViewController *mainViewController = (MainViewController *)[self presentingViewController];
         [baby cancelAllPeripheralsConnection];
-       [self.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-
+      // [self.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+        if(self.presentingViewController.presentingViewController.presentingViewController != nil){
+            [self.presentingViewController.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+        }else{
+            [self.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+        }
+        
+        
     }
     //切换单位
     if(indexPath.row ==2){
