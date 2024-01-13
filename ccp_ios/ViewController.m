@@ -80,6 +80,7 @@
         .widthIs(viewX*0.443)
         .heightRatioToView(self.view, 0.031);
     
+    /*
     //返回
     //47 86 ，77，136
     UIButton *btReturn =[UIButton new];
@@ -90,7 +91,8 @@
         .topSpaceToView(self.view, 0.054*viewY)
         .widthIs(0.039*viewX)
         .heightIs(0.031*viewY);
-    
+    */
+     
     //设置
     //673 88 ，721，698
     UIButton *btSetting =[UIButton new];
