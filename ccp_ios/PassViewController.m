@@ -95,7 +95,7 @@
     .topSpaceToView(self.view, 0.054*viewY)
     .widthIs(0.039*viewX)
     .heightIs(0.031*viewY);
-    
+    [btReturn addTarget:self action:@selector(goBack) forControlEvents:UIControlEventTouchUpInside];
     
 //    //文字 recreational seris
 //    UIImageView *imgRCeational = [UIImageView new];
@@ -385,10 +385,9 @@
         [textField resignFirstResponder];
         [self confirmPa];
     }
-
 }
 
-
+//确认密码
 -(void) confirmPa{
     int num1 = (int)strtoul([self.tfPass1.text UTF8String],0,16);  //16进制字符串转换成int
     int num2 = (int)strtoul([self.tfPass2.text UTF8String],0,16);  //16进制字符串转换成int
@@ -415,6 +414,13 @@
         [self.currPeripheral writeValue:data forCharacteristic:self.characteristic type:CBCharacteristicWriteWithResponse];
         [self.currPeripheral setNotifyValue:YES forCharacteristic:self.characteristic];
     }
+}
+
+//返回扫描页
+-(void)goBack{
+    [self dismissViewControllerAnimated:YES completion:^{
+        nil;
+    }];
 }
 
 @end

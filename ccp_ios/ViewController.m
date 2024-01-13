@@ -22,10 +22,10 @@
 @property (nonatomic,strong) UIView *viewMusk;
 @property (nonatomic,strong) UITableView *tableview;
 @property (nonatomic,strong)  UIButton *btclose;
-@property (nonatomic,retain)  UIView * viewPass;  //密码界面
-@property(nonatomic, strong) UITextField *tfPass1;
-@property(nonatomic, strong) UITextField *tfPass2;
-@property(nonatomic, strong) UITextField *tfPass3;
+//@property (nonatomic,retain)  UIView * viewPass;  //密码界面
+//@property(nonatomic, strong) UITextField *tfPass1;
+//@property(nonatomic, strong) UITextField *tfPass2;
+//@property(nonatomic, strong) UITextField *tfPass3;
 @property(nonatomic,strong) NSString *strpass;
 @property Byte bytePass1;
 @property Byte bytePass2;
@@ -58,12 +58,12 @@
 }
 
 -(void)viewDidAppear:(BOOL)animated{
+   // [self.viewMusk setHidden:YES];
     [self.tableview reloadData];
     [self babyDelegate];
     baby.scanForPeripherals().begin();
     //[self.viewMusk setHidden:NO];
 }
-
 
 -(void)setAutoLayout{
     
@@ -213,76 +213,6 @@
         .widthIs(self.view.size.width/10.0)
         .heightEqualToWidth();
     [self.btclose addTarget:self action:@selector(closeTableView) forControlEvents:UIControlEventTouchUpInside];
-    
-//    CGRect passFrame = CGRectMake(self.viewMusk.origin.x+30*rwidth, self.viewMusk.origin.y+202*rheight, 330*rwidth, 330*rheight);
-//    //[self.viewPass setBackgroundColor:[UIColor colorWithRed:200.0/255.0 green:101.0/255.0 blue:69.0/255.0 alpha:1]];
-//    self.viewPass = [[UIView alloc] initWithFrame:passFrame];
-//   // [self.viewPass setBackgroundColor:[UIColor whiteColor]];
-//    self.viewPass.layer.cornerRadius = 20.0;
-//    [self.viewMusk addSubview: self.viewPass];
-//
-//    //密码框
-//    CGRect rectPass1 = CGRectMake(44*rwidth, 32*rheight, 67*rwidth, 81*rheight);
-//    self.tfPass1 = [[UITextField alloc] initWithFrame:rectPass1];
-//    [self.tfPass1 setTextColor:[UIColor blackColor]];
-//    [self.tfPass1 setBackgroundColor:[UIColor grayColor]];
-//    //self.tfPass1.layer.backgroundColor = [[UIColor clearColor] CGColor];
-//    self.tfPass1.layer.borderColor = [[UIColor blackColor]CGColor];
-//    [self.tfPass1 setBackgroundColor:[UIColor colorWithRed:230/255.0 green:230/255.0 blue:230/255.0 alpha:1]];
-//    self.tfPass1.layer.borderWidth = 0.0;
-//    self.tfPass1.layer.cornerRadius = 16.0;
-//    [self.tfPass1.layer setMasksToBounds:YES];
-//    [self.tfPass1 setTextAlignment:NSTextAlignmentCenter];
-//    self.tfPass1.clearsOnBeginEditing = YES;
-//    [ self.viewPass addSubview:self.tfPass1];
-//    self.tfPass1.font = [UIFont fontWithName:@"Arial" size:25];
-//    [self.tfPass1 addTarget:self action:@selector(textFiledDidChange:) forControlEvents:UIControlEventEditingChanged];
-//    self.tfPass1.delegate = self;
-//   // [self.tfPass1 addTarget:self action:@selector(touched:) forControlEvents:UIControlEventTouchUpInside];
-//
-//    CGRect rectPass2 = CGRectMake(133*rwidth, 32*rheight, 67*rwidth, 81*rheight);
-//    self.tfPass2 = [[UITextField alloc] initWithFrame:rectPass2];
-//    [self.tfPass2 setTextColor:[UIColor blackColor]];
-//    [self.tfPass2 setBackgroundColor:[UIColor grayColor]];
-//    self.tfPass2.layer.backgroundColor = [[UIColor clearColor] CGColor];
-//    self.tfPass2.layer.borderColor = [[UIColor blackColor]CGColor];
-//    [self.tfPass2 setBackgroundColor:[UIColor colorWithRed:230/255.0 green:230/255.0 blue:230/255.0 alpha:1]];
-//    self.tfPass2.layer.borderWidth = 0.0;
-//    self.tfPass2.layer.cornerRadius = 16.0;
-//    [self.tfPass2.layer setMasksToBounds:YES];
-//    [self.tfPass2 setTextAlignment:NSTextAlignmentCenter];
-//    //self.tfPass2.borderStyle = UITextBorderStyleRoundedRect;
-//    self.tfPass2.clearsOnBeginEditing = YES;
-//    [ self.viewPass addSubview:self.tfPass2];
-//    self.tfPass2.font = [UIFont fontWithName:@"Arial" size:25];
-//    [self.tfPass2 addTarget:self action:@selector(textFiledDidChange:) forControlEvents:UIControlEventEditingChanged];
-//    self.tfPass2.delegate = self;
-//
-//    CGRect rectPass3 = CGRectMake(221*rwidth, 32*rheight, 67*rwidth, 81*rheight);
-//    self.tfPass3 = [[UITextField alloc] initWithFrame:rectPass3];
-//    [self.tfPass3 setTextColor:[UIColor blackColor]];
-//    [self.tfPass3 setBackgroundColor:[UIColor grayColor]];
-//    self.tfPass3.layer.backgroundColor = [[UIColor clearColor] CGColor];
-//    //self.tfPass3.layer.borderColor = [[UIColor blackColor]CGColor];
-//    [self.tfPass3 setBackgroundColor:[UIColor colorWithRed:230/255.0 green:230/255.0 blue:230/255.0 alpha:1]];
-//    self.tfPass3.layer.borderWidth = 0.0;
-//    self.tfPass3.layer.cornerRadius = 16.0;
-//    [self.tfPass3.layer setMasksToBounds:YES];
-//    [self.tfPass3 setTextAlignment:NSTextAlignmentCenter];
-//    self.tfPass3.clearsOnBeginEditing = YES;
-//    [ self.viewPass addSubview:self.tfPass3];
-//    self.tfPass3.font = [UIFont fontWithName:@"Arial" size:25];
-//    [self.tfPass3 addTarget:self action:@selector(textFiledDidChange:) forControlEvents:UIControlEventEditingChanged];
-//    self.tfPass3.delegate = self;
-
-    //关闭按钮
-    CGRect rectClose = CGRectMake(179*rwidth, 678*rheight, 33*rwidth, 33*rheight);
-    UIButton *close = [[UIButton alloc] initWithFrame:rectClose];
-    [self.viewMusk addSubview:close];
-    [close setImage:[UIImage imageNamed:@"close"] forState:UIControlStateNormal];
-    close.contentMode = UIViewContentModeScaleAspectFit;
-    [close addTarget:self action:@selector(closepass) forControlEvents:UIControlEventTouchUpInside];
-    
     [self.viewMusk setHidden:YES];
 }
 
@@ -472,6 +402,7 @@
                 if(self.dataRead.gc == 0x00){
                     NSLog(@"跳到密码输入界面");
                    // [weakSelf.viewPass setHidden:NO];
+                    [weakSelf.viewMusk setHidden:YES];
                     PassViewController  *passViewController = [PassViewController new];
                     [passViewController setModalPresentationStyle:UIModalPresentationFullScreen];
                     passViewController.currPeripheral = weakSelf.currPeripheral;
@@ -507,7 +438,6 @@
     [self.viewMusk setHidden:NO];
     [self.tableview setHidden:NO];
     [self.btclose setHidden:NO];
-    [self.viewPass setHidden:YES];
 }
 
 -(void) deviceSelected{
@@ -516,13 +446,13 @@
    // [self.tableview setHidden:NO];
     //baby.scanForPeripherals().begin();
     
-    [self.tfPass1 setHidden:YES];
-    [self.tfPass2 setHidden:YES];
-    [self.tfPass3 setHidden:YES];
+//    [self.tfPass1 setHidden:YES];
+//    [self.tfPass2 setHidden:YES];
+//    [self.tfPass3 setHidden:YES];
     
    // self.hud = [[MBProgressHUD alloc]initWithView:self.body];
-    self.hud = [[MBProgressHUD alloc]initWithView:self.viewPass];
-    [self.viewPass addSubview:self.hud];
+    self.hud = [[MBProgressHUD alloc]initWithView:self.viewMusk];
+    [self.viewMusk addSubview:self.hud];
     self.hud.mode = MBProgressHUDModeIndeterminate;
     
     [self.hud setOffset:CGPointMake(0, -150 *self.view.height/844.0)];
@@ -572,69 +502,6 @@
     
 }
 
-- (void)textFiledDidChange:(UITextField *)textField{
-    
-    textField.layer.borderWidth = 0.0;
-    [textField.layer setBackgroundColor: [[UIColor colorWithRed:230/255.0 green:230/255.0 blue:230/255.0 alpha:1.0] CGColor]];
-    
-    unsigned long length = textField.text.length;
-    NSLog(@"length :%ld",length);
-    NSString *str = textField.text;
-    if (length > 1) {
-        str = [textField.text substringToIndex:1];
-    }
-    textField.text = str;
-    NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
-    paragraphStyle.alignment = NSTextAlignmentCenter;
-    textField.attributedPlaceholder = [NSAttributedString.alloc initWithString:str attributes:@{NSParagraphStyleAttributeName:paragraphStyle}];
-    
-    
-    if([textField isEqual:self.tfPass1]){
-        [textField resignFirstResponder];
-        [self.tfPass2  becomeFirstResponder];
-    }
-    
-    if([textField isEqual:self.tfPass2]){
-        [textField resignFirstResponder];
-        [self.tfPass3 becomeFirstResponder];
-    }
-    
-    if((self.tfPass1.text.length + self.tfPass2.text.length + self.tfPass3.text.length )== 3){
-        [textField resignFirstResponder];
-        [self confirmPa];
-    }
-
-}
-
-
--(void) confirmPa{
-    int num1 = (int)strtoul([self.tfPass1.text UTF8String],0,16);  //16进制字符串转换成int
-    int num2 = (int)strtoul([self.tfPass2.text UTF8String],0,16);  //16进制字符串转换成int
-    int num3 = (int)strtoul([self.tfPass3.text UTF8String],0,16);  //16进制字符串转换成int
-    
-    NSLog(@"%d",num1);
-    NSLog(@"%d",num2);
-    NSLog(@"%d",num3);
-    //查询状态
-    if(self.characteristic != nil){
-        Byte  write[8];
-        write[0] = 0xAA;
-        write[1] = 0x01;
-        write[2] = 0x00;
-        write[3] = (Byte)num1;
-        write[4] = (Byte)num2*16+num3;
-        write[6] = 0xFF & CalcCRC(&write[1], 4);
-        write[5] = 0xFF & (CalcCRC(&write[1], 4)>>8);
-        write[7] = 0x55;
-        
-        //首次连接 write = AA 09 01 00 00 78 52 55
-        
-        NSData *data = [[NSData alloc]initWithBytes:write length:8];
-        [self.currPeripheral writeValue:data forCharacteristic:self.characteristic type:CBCharacteristicWriteWithResponse];
-        [self.currPeripheral setNotifyValue:YES forCharacteristic:self.characteristic];
-    }
-}
-
 
 //关闭密码框
 -(void)closeTableView{
@@ -647,9 +514,9 @@
 //获取密码
 -(void)getPassWord{
     //大板 A46
-    [self.tfPass1 setHidden:NO];
-    [self.tfPass2 setHidden:NO];
-    [self.tfPass3 setHidden:NO];
+//    [self.tfPass1 setHidden:NO];
+//    [self.tfPass2 setHidden:NO];
+//    [self.tfPass3 setHidden:NO];
     
     if(self.characteristic != nil){
         Byte  write[8];
@@ -722,13 +589,29 @@
             }
         }
         NSLog(@"---------%@",strtype);
+        
+        for(CBPeripheral *peripheral in self.devices){
+            if([peripheral.name isEqualToString:strtype]){
+                [self.viewMusk setHidden:YES];
+                [baby.centralManager stopScan];
+                [baby cancelAllPeripheralsConnection];
+                [baby.centralManager connectPeripheral:peripheral options:nil];
+                //2.停止会话
+                [self.session stopRunning];
+                //3.移除预览图层
+                [self.layer removeFromSuperlayer];
+            }
+        }
+        
+        
+        /*
         int i=0;
         for(i=0;i<self.devices.count;i++){
             if([[self.devices objectAtIndex:i].name isEqualToString:strtype]){
                 [self.viewMusk setHidden:NO];
                 [self.tableview setHidden:YES];
                 [self.btclose setHidden:YES];
-                [self.viewPass setHidden:YES];
+                //[self.viewPass setHidden:YES];
                 [baby.centralManager stopScan];
                 [baby cancelAllPeripheralsConnection];
                 [baby.centralManager connectPeripheral:[self.devices objectAtIndex:i] options:nil];
@@ -738,7 +621,7 @@
                 [self.layer removeFromSuperlayer];
                 return;
             }
-        }
+        }*/
         //没有找到设备
        
             self.hud.mode = MBProgressHUDModeText;
@@ -781,15 +664,15 @@
     //有返回非零数字，密码正确。保存密码
     if( self.dataRead.gc!= 0 ){
         [self.viewMusk setHidden:YES];
-        if(self.strpass == nil){
-            //保存密码
-            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-            self.strpass = [NSString stringWithFormat:@"%@%@%@",self.tfPass1.text,self.tfPass2.text,self.tfPass3.text];
-            [defaults setValue:self.strpass forKey:self.currPeripheral.identifier.UUIDString];
-            self.bytePass1 = (Byte)strtoul([self.tfPass1.text UTF8String],0,16);  //16进制字符串转换成int
-            self.bytePass2 = (Byte)strtoul([self.tfPass2.text UTF8String],0,16);  //16进制字符串转换成int
-            self.bytePass3 = (Byte)strtoul([self.tfPass3.text UTF8String],0,16);  //16进
-        }
+//        if(self.strpass == nil){
+//            //保存密码
+//            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+//            self.strpass = [NSString stringWithFormat:@"%@%@%@",self.tfPass1.text,self.tfPass2.text,self.tfPass3.text];
+//            [defaults setValue:self.strpass forKey:self.currPeripheral.identifier.UUIDString];
+//            self.bytePass1 = (Byte)strtoul([self.tfPass1.text UTF8String],0,16);  //16进制字符串转换成int
+//            self.bytePass2 = (Byte)strtoul([self.tfPass2.text UTF8String],0,16);  //16进制字符串转换成int
+//            self.bytePass3 = (Byte)strtoul([self.tfPass3.text UTF8String],0,16);  //16进
+//        }
     
         [self.viewMusk setHidden:YES];
         //  [baby.centralManager  stopScan];
