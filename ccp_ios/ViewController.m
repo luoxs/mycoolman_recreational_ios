@@ -13,6 +13,7 @@
 #import "MainViewController.h"
 #import <AVFoundation/AVFoundation.h>
 #import "PassViewController.h"
+#import "CDZQRScanViewController.h"
 
 @interface ViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,AVCaptureMetadataOutputObjectsDelegate>
 @property (retain, nonatomic)  MBProgressHUD *hud;
@@ -46,6 +47,7 @@
     [self creatview];
     baby = [BabyBluetooth shareBabyBluetooth];
     [self babyDelegate];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(recievemessage:) name:@"device" object:nil];
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -53,6 +55,47 @@
     [self babyDelegate];
     baby.scanForPeripherals().begin();
 }
+
+-(void)recievemessage:(NSNotification *)text{
+    NSString *message = [NSString stringWithFormat:@"%@",text.userInfo[@"qrvalue"]];
+    NSString *strtype = [[NSString alloc]init];
+    
+    if(message.length>=10){
+        NSArray *strs = [message componentsSeparatedByString:@"="];
+        if(strs.count >=2){
+            strtype = [strs objectAtIndex:2];
+        }
+    }
+    NSLog(@"---------%@",strtype);
+    
+    for(CBPeripheral *peripheral in self.devices){
+        if([peripheral.name isEqualToString:strtype]){
+            [self.viewMusk setHidden:YES];
+            [baby.centralManager stopScan];
+            [baby cancelAllPeripheralsConnection];
+            [baby.centralManager connectPeripheral:peripheral options:nil];
+            //2.停止会话
+            [self.session stopRunning];
+            //3.移除预览图层
+            [self.layer removeFromSuperlayer];
+            return;
+        }
+    }
+    
+    //没有找到设备
+    self.hud.mode = MBProgressHUDModeText;
+    [self.view addSubview:self.hud];
+    self.hud.label.text = @"Device not found!";
+    [self.hud setMinShowTime:3];
+    [self.hud showAnimated:YES];
+    [self.hud hideAnimated:YES];
+    
+    //2.停止会话
+    [self.session stopRunning];
+    //3.移除预览图层
+    [self.layer removeFromSuperlayer];
+}
+
 
 -(void)setAutoLayout{
     
@@ -81,18 +124,18 @@
         .heightRatioToView(self.view, 0.031);
     
     /*
-    //返回
-    //47 86 ，77，136
-    UIButton *btReturn =[UIButton new];
-    [self.view addSubview:btReturn];
-    [btReturn setImage:[UIImage imageNamed:@"APP-Surface16_05"] forState:UIControlStateNormal];
-    btReturn.sd_layout
-        .leftSpaceToView(self.view, 0.062*viewX)
-        .topSpaceToView(self.view, 0.054*viewY)
-        .widthIs(0.039*viewX)
-        .heightIs(0.031*viewY);
-    */
-     
+     //返回
+     //47 86 ，77，136
+     UIButton *btReturn =[UIButton new];
+     [self.view addSubview:btReturn];
+     [btReturn setImage:[UIImage imageNamed:@"APP-Surface16_05"] forState:UIControlStateNormal];
+     btReturn.sd_layout
+     .leftSpaceToView(self.view, 0.062*viewX)
+     .topSpaceToView(self.view, 0.054*viewY)
+     .widthIs(0.039*viewX)
+     .heightIs(0.031*viewY);
+     */
+    
     //设置
     //673 88 ，721，698
     UIButton *btSetting =[UIButton new];
@@ -215,7 +258,7 @@
         
         if([peripheral.name hasPrefix:@"CCP15R"] ||[peripheral.name hasPrefix:@"CCP20R"]){
             if(![weakSelf.devices containsObject:peripheral]){
-            
+                
                 [weakSelf.devices addObject:peripheral];
                 [weakSelf.tableview reloadData];
             }
@@ -457,25 +500,30 @@
     }
 }
 
+
 //执行扫描二维码
 -(void)scanQRcode{
-    //设置会话
-    AVAuthorizationStatus authStatus =[AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
-    //判断摄像头状态是否可用
-    if(authStatus==AVAuthorizationStatusAuthorized){
-        //开始扫描二维码
-        [self startScanQR];
-    }else{
-        NSLog(@"未开启相机权限，请前往设置中开启");
-        [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
-            if (granted) {
-                [self startScanQR];
-            } else {
-                // 拒绝
-            }
-        }];
-    }
+    /*
+     //设置会话
+     AVAuthorizationStatus authStatus =[AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+     //判断摄像头状态是否可用
+     if(authStatus==AVAuthorizationStatusAuthorized){
+     //开始扫描二维码
+     [self startScanQR];
+     }else{
+     NSLog(@"未开启相机权限，请前往设置中开启");
+     [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
+     if (granted) {
+     [self startScanQR];
+     } else {
+     // 拒绝
+     }
+     }];
+     }*/
+    CDZQRScanViewController *vc = [CDZQRScanViewController new];
+    [self.navigationController pushViewController:vc animated:YES];
 }
+
 
 //开始扫描
 -(void) startScanQR{
@@ -495,8 +543,7 @@
 }
 
 -(void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection{
-    if (metadataObjects.count>0)
-    {
+    if (metadataObjects.count>0){
         //1.获取到扫描的内容
         AVMetadataMachineReadableCodeObject *object = [metadataObjects lastObject];
         NSLog(@"扫描的内容==%@",object.stringValue);
@@ -523,9 +570,7 @@
             }
         }
         
-        
         //没有找到设备
-        
         self.hud.mode = MBProgressHUDModeText;
         [self.view addSubview:self.hud];
         self.hud.label.text = @"Device not found!";

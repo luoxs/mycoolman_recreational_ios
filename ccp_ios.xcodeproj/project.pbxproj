@@ -56,6 +56,8 @@
 		452B117E2B4ADCE900F9ADB2 /* APP-Surface15_05.png in Resources */ = {isa = PBXBuildFile; fileRef = 452B115A2B4ADCE900F9ADB2 /* APP-Surface15_05.png */; };
 		452B117F2B4ADCE900F9ADB2 /* APP-Surface19_12.png in Resources */ = {isa = PBXBuildFile; fileRef = 452B115B2B4ADCE900F9ADB2 /* APP-Surface19_12.png */; };
 		452B11822B4AED5000F9ADB2 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 452B11812B4AED5000F9ADB2 /* MainViewController.m */; };
+		4552FDB62B57790C00FE693F /* CDZQRScanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4552FDB52B57790C00FE693F /* CDZQRScanViewController.m */; };
+		4552FDB92B57794000FE693F /* CDZQRScanView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4552FDB82B57794000FE693F /* CDZQRScanView.m */; };
 		45A53D062B5231E700CD55DE /* PassViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45A53D052B5231E700CD55DE /* PassViewController.m */; };
 		45A53D0A2B52330E00CD55DE /* ble.png in Resources */ = {isa = PBXBuildFile; fileRef = 45A53D072B52330E00CD55DE /* ble.png */; };
 		45A53D0B2B52330E00CD55DE /* setting.png in Resources */ = {isa = PBXBuildFile; fileRef = 45A53D082B52330E00CD55DE /* setting.png */; };
@@ -121,6 +123,10 @@
 		452B115B2B4ADCE900F9ADB2 /* APP-Surface19_12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "APP-Surface19_12.png"; sourceTree = "<group>"; };
 		452B11802B4AED5000F9ADB2 /* MainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		452B11812B4AED5000F9ADB2 /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		4552FDB42B57790B00FE693F /* CDZQRScanViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDZQRScanViewController.h; sourceTree = "<group>"; };
+		4552FDB52B57790C00FE693F /* CDZQRScanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDZQRScanViewController.m; sourceTree = "<group>"; };
+		4552FDB72B57794000FE693F /* CDZQRScanView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDZQRScanView.h; sourceTree = "<group>"; };
+		4552FDB82B57794000FE693F /* CDZQRScanView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDZQRScanView.m; sourceTree = "<group>"; };
 		45A53D042B5231E700CD55DE /* PassViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PassViewController.h; sourceTree = "<group>"; };
 		45A53D052B5231E700CD55DE /* PassViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PassViewController.m; sourceTree = "<group>"; };
 		45A53D072B52330E00CD55DE /* ble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ble.png; sourceTree = "<group>"; };
@@ -148,6 +154,10 @@
 		452B11022B4AD79000F9ADB2 = {
 			isa = PBXGroup;
 			children = (
+				4552FDB72B57794000FE693F /* CDZQRScanView.h */,
+				4552FDB82B57794000FE693F /* CDZQRScanView.m */,
+				4552FDB42B57790B00FE693F /* CDZQRScanViewController.h */,
+				4552FDB52B57790C00FE693F /* CDZQRScanViewController.m */,
 				452B110D2B4AD79100F9ADB2 /* ccp_ios */,
 				452B110C2B4AD79100F9ADB2 /* Products */,
 				DA951BCBFA6E58C5BA5F91E0 /* Pods */,
@@ -405,12 +415,14 @@
 				452B11162B4AD79100F9ADB2 /* ViewController.m in Sources */,
 				452B11322B4ADA3C00F9ADB2 /* DataRead.m in Sources */,
 				45A53D062B5231E700CD55DE /* PassViewController.m in Sources */,
+				4552FDB62B57790C00FE693F /* CDZQRScanViewController.m in Sources */,
 				452B11822B4AED5000F9ADB2 /* MainViewController.m in Sources */,
 				452B11362B4ADA3C00F9ADB2 /* crc.c in Sources */,
 				452B11102B4AD79100F9ADB2 /* AppDelegate.m in Sources */,
 				452B11342B4ADA3C00F9ADB2 /* DataWrite.m in Sources */,
 				452B11212B4AD79200F9ADB2 /* main.m in Sources */,
 				452B11132B4AD79100F9ADB2 /* SceneDelegate.m in Sources */,
+				4552FDB92B57794000FE693F /* CDZQRScanView.m in Sources */,
 				45A53D0F2B5279DE00CD55DE /* SettingViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -571,7 +583,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.luoxs.www.ccp-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -603,7 +615,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.luoxs.www.ccp-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
