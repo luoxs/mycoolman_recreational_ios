@@ -445,7 +445,7 @@
     CBPeripheral *peripheral = [self.devices objectAtIndex:indexPath.row];
     // NSString *advertiseName = [self.localNames objectAtIndex:indexPath.row];
     [cell.textLabel setText:peripheral.name];
-    [cell.textLabel setTextColor:[UIColor blackColor]];
+    [cell.textLabel setTextColor:[UIColor colorWithRed:105.0/255 green:79.0/255 blue:83.0/255 alpha:1.0]];
     
     return cell;
 }

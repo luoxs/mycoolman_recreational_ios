@@ -35,8 +35,8 @@
     self.tableview = [[UITableView alloc]init];
     self.tableview.delegate = self;
     self.tableview.dataSource = self;
-    self.celltitles = [[NSArray alloc] initWithObjects:@"Bluetooth",@"Temperature Alarm",@"Temperature Unit",@"Version", nil];
-    self.detailtitles = [[NSArray alloc] initWithObjects:@"Connectd >",@"None >",@"°C >",@"1.2.3.45", nil];
+    self.celltitles = [[NSArray alloc] initWithObjects:@"Bluetooth",@"Temperature Unit",@"Version", nil];
+    self.detailtitles = [[NSArray alloc] initWithObjects:@"Connectd >",@"°C >",@"1.2.3.45", nil];
   
     self.label1 = [UILabel new];
     self.label2 = [UILabel new];
@@ -108,7 +108,7 @@
     .centerXEqualToView(self.view)
     .topSpaceToView(self.view, 0.15 *viewY)
     .widthRatioToView(self.view, 1.0)
-    .heightIs(self.view.height*0.38);
+    .heightIs(self.view.height*0.3);
 }
 
 
@@ -196,7 +196,7 @@
 
 #pragma mark tableviewdatasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 4;
+    return self.celltitles.count;
 }
 
 
