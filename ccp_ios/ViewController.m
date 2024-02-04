@@ -548,12 +548,17 @@
         AVMetadataMachineReadableCodeObject *object = [metadataObjects lastObject];
         NSLog(@"扫描的内容==%@",object.stringValue);
         NSString *strtype = [[NSString alloc]init];
+        /*
         if(object.stringValue.length>=10){
             NSArray *strs = [object.stringValue componentsSeparatedByString:@"="];
             if(strs.count >=2){
                 strtype = [strs objectAtIndex:2];
             }
         }
+         */
+        NSDictionary *dicparas = [self  paramerWithURL:object.stringValue];
+        strtype = [dicparas objectForKey:@"BLE"];
+        
         NSLog(@"---------%@",strtype);
         
         for(CBPeripheral *peripheral in self.devices){
@@ -584,6 +589,20 @@
         [self.layer removeFromSuperlayer];
     }
 }
+
+//获取网址中的参数值
+-(NSDictionary *)paramerWithURL:(NSURL *) url {
+    NSMutableDictionary *paramer = [[NSMutableDictionary alloc]init];
+    //创建url组件类
+    NSURLComponents *urlComponents = [[NSURLComponents alloc] initWithString:url.absoluteString];
+    //遍历所有参数，添加入字典
+    [urlComponents.queryItems enumerateObjectsUsingBlock:^(NSURLQueryItem * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [paramer setObject:obj.value forKey:obj.name];
+    }];
+    return paramer;
+}
+
+
 
 
 //更新状态
