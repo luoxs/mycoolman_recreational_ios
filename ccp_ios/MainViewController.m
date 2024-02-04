@@ -198,7 +198,7 @@
     [self.label1 setTextAlignment:NSTextAlignmentCenter];
     [self.label1 setNumberOfLines:4];
     [self.label1 sizeToFit];
-    [self.label1 setText:@"You MyCoolman is\nconnected to Bluetooth."];
+    [self.label1 setText:@"Your MyCoolman is\nconnected to Bluetooth."];
     self.label1.sd_layout
         .centerXEqualToView(self.view)
         .centerYIs(viewY*0.38)
