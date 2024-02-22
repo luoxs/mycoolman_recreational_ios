@@ -193,7 +193,7 @@
     [lbInstr setTextAlignment:NSTextAlignmentCenter];
     [lbInstr setNumberOfLines:2];
     [lbInstr sizeToFit];
-    [lbInstr setText:@"Or use the phone menue\nand search for device"];
+    [lbInstr setText:@"Or use the phone menu\nand search for device"];
     [lbInstr setAdjustsFontSizeToFitWidth:YES];
     
     lbInstr.sd_layout

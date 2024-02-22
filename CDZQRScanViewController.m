@@ -26,9 +26,9 @@
 
 - (void)setupViews{
     self.view.backgroundColor = [UIColor blackColor];
-    UIBarButtonItem *libaryItem = [[UIBarButtonItem alloc]initWithTitle:@"album" style:UIBarButtonItemStylePlain target:self action:@selector(openLibary)];
+    UIBarButtonItem *libaryItem = [[UIBarButtonItem alloc]initWithTitle:@"Album" style:UIBarButtonItemStylePlain target:self action:@selector(openLibary)];
     self.navigationItem.rightBarButtonItem = libaryItem;
-    self.navigationItem.title = @"scan device";
+    self.navigationItem.title = @"";
     [self.view addSubview:self.scanView];
 }
 
